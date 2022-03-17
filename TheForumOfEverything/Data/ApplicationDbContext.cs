@@ -11,10 +11,10 @@ namespace TheForumOfEverything.Data
         {
         }
 
-        public DbSet<UserAccount> userAccounts { get; set; }
-        public DbSet<Post> posts { get; set; }
-        public DbSet<Comment> comments { get; set; }
-        public DbSet<Tag> tags { get; set; }
+        public DbSet<UserAccount> UserAccounts { get; set; }
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Tag> Tags { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

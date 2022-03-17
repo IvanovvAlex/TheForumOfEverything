@@ -1,6 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TheForumOfEverything.Data;
+using TheForumOfEverything.Services.Post;
+using TheForumOfEverything.Services.Comment;
+using TheForumOfEverything.Services.Tags;
+using TheForumOfEverything.Services.UserAccount;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +25,10 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 })
     .AddEntityFrameworkStores<ApplicationDbContext>(); 
 builder.Services.AddControllersWithViews();
+builder.Services.AddTransient<IUserAccountService, UserAccountService>();
+builder.Services.AddTransient<IPostService, PostService>();
+builder.Services.AddTransient<ICommentService, CommentService>();
+builder.Services.AddTransient<ITagService, TagService>();
 
 var app = builder.Build();
 
