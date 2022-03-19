@@ -5,9 +5,9 @@ namespace TheForumOfEverything.Services.Tags
     public interface ITagService
     {
         ICollection<TagViewModel> GetAll();
-        bool CreateTag(CreateTagViewModel model);
-        TagViewModel GetById(string Id);
+        TagViewModel Create(CreateTagViewModel model);
+        TagViewModel GetById(string id);
         TagViewModel Edit(TagViewModel model);
-        bool DeleteById(string Id);
+        bool DeleteById(string id);
     }
 }

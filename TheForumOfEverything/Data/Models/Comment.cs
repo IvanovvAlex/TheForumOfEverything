@@ -16,7 +16,7 @@ namespace TheForumOfEverything.Data.Models
         public string UserId { get; set; }
 
         [Required]
-        public UserAccount User { get; set; }
+        public ApplicationUser User { get; set; }
 
         [Required]
         public string PostId { get; set; }

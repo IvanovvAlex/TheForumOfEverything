@@ -23,25 +23,31 @@ namespace TheForumOfEverything.Services.Tags
 
             return tags;
         }
-        public bool CreateTag(CreateTagViewModel model)
+        public TagViewModel Create(CreateTagViewModel model)
         {
             string modelText = model.Text;
 
             bool isTagExist = context.Tags.Any(x => x.Text == modelText);
             if (isTagExist)
             {
-                return false;
+                return null;
             }
 
             Tag newTag = new Tag(modelText);
             context.Tags.Add(newTag);
             context.SaveChanges();
-            return true;
+            string newTagId = newTag.Id;
+            TagViewModel newTagViewModel = new TagViewModel()
+            {
+                Id = newTagId,
+                Text = modelText,
+            };
+            return newTagViewModel;
         }
 
-        public TagViewModel GetById(string Id)
+        public TagViewModel GetById(string id)
         {
-            Tag tag = context.Tags.FirstOrDefault(x => x.Id == Id);
+            Tag tag = context.Tags.FirstOrDefault(x => x.Id == id);
             if (tag == null)
             {
                 return null;
@@ -72,9 +78,9 @@ namespace TheForumOfEverything.Services.Tags
             return model;
         }
 
-        public bool DeleteById(string Id)
+        public bool DeleteById(string id)
         {
-            Tag tag = context.Tags.FirstOrDefault(x => x.Id == Id);
+            Tag tag = context.Tags.FirstOrDefault(x => x.Id == id);
             if (tag == null)
             {
                 return false;

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using TheForumOfEverything.Data.Models;
 using TheForumOfEverything.Models.Tags;
 using TheForumOfEverything.Services.Tags;
 
@@ -9,9 +10,9 @@ namespace TheForumOfEverything.Controllers
     public class TagsController : Controller
     {
         private readonly ITagService tagService;
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public TagsController(ITagService tagService, UserManager<IdentityUser> userManager)
+        public TagsController(ITagService tagService, UserManager<ApplicationUser> userManager)
         {
             this.tagService = tagService;
             this.userManager = userManager;
@@ -39,19 +40,19 @@ namespace TheForumOfEverything.Controllers
                 return NotFound();
             }
 
-            bool isTagCreated = tagService.CreateTag(model);
+            TagViewModel newTagModel = tagService.Create(model);
 
-            if (isTagCreated)
+            if (newTagModel != null)
             {
-                return RedirectToAction("Index", "Tags");
+                return Redirect($"/Tags/Details/{newTagModel.Id}");
             }
             return View(model);
         }
 
         [Authorize]
-        public IActionResult Details(string Id)
+        public IActionResult Details(string id)
         {
-            TagViewModel model = tagService.GetById(Id);
+            TagViewModel model = tagService.GetById(id);
             if (model == null)
             {
                 return NotFound();
@@ -60,9 +61,9 @@ namespace TheForumOfEverything.Controllers
         }
 
         [Authorize]
-        public IActionResult Edit(string Id)
+        public IActionResult Edit(string id)
         {
-            TagViewModel model = tagService.GetById(Id);
+            TagViewModel model = tagService.GetById(id);
             if (model == null)
             {
                 return NotFound();
@@ -80,15 +81,15 @@ namespace TheForumOfEverything.Controllers
             {
                 return NotFound();
             }
-            string Id = model.Id;
+            string id = model.Id;
 
-            return Redirect($"/Tags/Details/{Id}");
+            return Redirect($"/Tags/Details/{id}");
         }
 
         [Authorize]
-        public IActionResult Delete(string Id)
+        public IActionResult Delete(string id)
         {
-            bool isDeleted = tagService.DeleteById(Id);
+            bool isDeleted = tagService.DeleteById(id);
             if (!isDeleted)
             {
                 return NotFound();

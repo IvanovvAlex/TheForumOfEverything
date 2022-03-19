@@ -2,7 +2,7 @@
 
 namespace TheForumOfEverything.Controllers
 {
-    public class UserAccountsController : Controller
+    public class ApplicationUsersController : Controller
     {
         public IActionResult Index()
         {

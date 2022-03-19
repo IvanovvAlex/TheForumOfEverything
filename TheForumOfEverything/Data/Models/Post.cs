@@ -4,11 +4,6 @@ namespace TheForumOfEverything.Data.Models
 {
     public class Post
     {
-        public Post()
-        {
-
-        }
-
         [Required]
         public string Id { get; init; } = Guid.NewGuid().ToString();
 
@@ -16,7 +11,7 @@ namespace TheForumOfEverything.Data.Models
         public string UserId { get; set; }
 
         [Required]
-        public UserAccount User { get; set; }
+        public ApplicationUser User { get; set; }
 
         [Required]
         public string TimeCreated { get; init; } = DateTime.Now.ToString();
