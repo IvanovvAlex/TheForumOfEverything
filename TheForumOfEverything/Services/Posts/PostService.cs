@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using TheForumOfEverything.Data;
 using TheForumOfEverything.Data.Models;
 using TheForumOfEverything.Models.Posts;
@@ -77,7 +78,7 @@ namespace TheForumOfEverything.Services.Posts
 
         public PostViewModel GetById(string id)
         {
-            Post post = context.Posts.FirstOrDefault(x => x.Id == id);
+            Post post = context.Posts.Include(u => u.User).FirstOrDefault(x => x.Id == id);
             if (post == null)
             {
                 return null;
@@ -101,7 +102,8 @@ namespace TheForumOfEverything.Services.Posts
         {
             string modelId = model.Id;
 
-            Post post = context.Posts.FirstOrDefault(x => x.Id == modelId);
+            Post post = context.Posts
+                .FirstOrDefault(x => x.Id == modelId);
             if (post == null)
             {
                 return null;

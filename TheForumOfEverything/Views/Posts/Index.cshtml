@@ -1,36 +1,30 @@
 ﻿@model IEnumerable<TheForumOfEverything.Models.Posts.PostViewModel>
 
 @{
-    ViewData["Title"] = "Posts";
+    ViewData["Title"] = "Index";
 }
-
-
-<p>
-
-    <br><h1>Posts</h1></br>
-    <a asp-action="Create">Create New Post</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Text)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Text)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<!-- Main Content-->
+<br>
+<br>
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+              @foreach (var item in Model){
+                <!-- Post preview-->
+                <div class="post-preview">
+                    <a asp-controller="Posts" asp-action="Details" asp-route-id="@item.Id">
+                        <h2 class="post-title">@item.Title</h2>
+                        <h3 class="post-subtitle">@item.ShortDescription</h3>
+                    </a>
+                    <p class="post-meta">
+                        Posted by
+                        <a href="#!">@item.User.UserName</a>
+                        on @item.TimeCreated
+                    </p>
+                </div>
+                <!-- Divider-->
+                <hr class="my-4" />
+               }
+            </div>
+        </div>
+    </div>
