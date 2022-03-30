@@ -18,17 +18,39 @@ namespace TheForumOfEverything.Services.Posts
                 .Select(x => new PostViewModel()
                 {
                     Id = x.Id,
+                    Title = x.Title,
+                    ShortDescription = x.ShortDescription,
                     Text = x.Text,
+                    TimeCreated = x.TimeCreated,
+                    User = x.User,
                 })
                 .ToHashSet();
 
             return posts;
         }
+        public ICollection<PostViewModel> GetLastNPosts(int n)
+        {
+            ICollection<PostViewModel> posts = context.Posts
+                .Skip(Math.Max(0, context.Posts.Count() - n))
+                .Select(x => new PostViewModel()
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    ShortDescription = x.ShortDescription,
+                    Text = x.Text,
+                    TimeCreated = x.TimeCreated,
+                    User = x.User,
+                })
+                .ToHashSet();
+            return posts;
+        }
         public PostViewModel Create(CreatePostViewModel model, string userId)
         {
+            string modelTitle = model.Title;
+            string modelShortDescription = model.ShortDescription;
             string modelText = model.Text;
 
-            bool isPostExist = context.Posts.Any(x => x.Text == modelText);
+            bool isPostExist = context.Posts.Any(x => x.Title == modelText);
             if (isPostExist)
             {
                 return null;
@@ -36,7 +58,10 @@ namespace TheForumOfEverything.Services.Posts
 
             Post newPost = new Post()
             {
+                Title = modelTitle,
+                ShortDescription = modelShortDescription,
                 Text = modelText,
+                
                 UserId = userId
             };
             context.Posts.Add(newPost);
@@ -61,7 +86,12 @@ namespace TheForumOfEverything.Services.Posts
             PostViewModel model = new PostViewModel()
             {
                 Id = post.Id,
+                Title = post.Title,
+                ShortDescription = post.ShortDescription,
                 Text = post.Text,
+                TimeCreated = post.TimeCreated,
+                User = post.User,
+                UserId = post.UserId
             };
 
             return model;

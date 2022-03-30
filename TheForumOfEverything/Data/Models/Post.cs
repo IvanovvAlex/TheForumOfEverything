@@ -17,6 +17,13 @@ namespace TheForumOfEverything.Data.Models
         public string TimeCreated { get; init; } = DateTime.Now.ToString();
 
         [Required]
+        [MaxLength(100)]
+        public string Title { get; set; }
+
+        [Required]
+        [MaxLength(150)]
+        public string ShortDescription { get; set; }
+        [Required]
         public string Text { get; set; }
 
         public ICollection<Tag> Tags { get; set; } = new HashSet<Tag>();
