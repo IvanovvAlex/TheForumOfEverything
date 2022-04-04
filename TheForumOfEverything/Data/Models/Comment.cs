@@ -28,6 +28,6 @@ namespace TheForumOfEverything.Data.Models
         public string TimeCreated { get; init; } = DateTime.Now.ToString();
 
         [Required]
-        public string Text { get; set; }
+        public string Content { get; set; }
     }
 }

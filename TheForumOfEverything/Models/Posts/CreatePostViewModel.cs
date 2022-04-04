@@ -1,9 +1,14 @@
-﻿namespace TheForumOfEverything.Models.Posts
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace TheForumOfEverything.Models.Posts
 {
     public class CreatePostViewModel
     {
         public string Title { get; set; }
-        public string ShortDescription { get; set; }
-        public string Text { get; set; }
+        public string Description { get; set; }
+        public string Content { get; set; }
+
+        [Required, Display(Name = "Header Image")]
+        public IFormFile HeaderImage { get; set; }
     }
 }

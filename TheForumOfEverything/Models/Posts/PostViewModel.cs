@@ -1,4 +1,5 @@
-﻿using TheForumOfEverything.Data.Models;
+﻿using System.ComponentModel.DataAnnotations;
+using TheForumOfEverything.Data.Models;
 
 namespace TheForumOfEverything.Models.Posts
 {
@@ -9,8 +10,11 @@ namespace TheForumOfEverything.Models.Posts
         public ApplicationUser User { get; set; }
         public string TimeCreated { get; set; }
         public string Title { get; set; }
-        public string ShortDescription { get; set; }
-        public string Text { get; set; }
+        public string Description { get; set; }
+        public string Content { get; set; }
+
+        [Required, Display(Name = "Header Image")]
+        public IFormFile HeaderImage { get; set; }
         public ICollection<Tag> Tags { get; set; }
         public ICollection<Comment> Comments { get; set; } 
     }

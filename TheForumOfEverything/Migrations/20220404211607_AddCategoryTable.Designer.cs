@@ -12,8 +12,8 @@ using TheForumOfEverything.Data;
 namespace TheForumOfEverything.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220329232028_edit")]
-    partial class edit
+    [Migration("20220404211607_AddCategoryTable")]
+    partial class AddCategoryTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -256,18 +256,33 @@ namespace TheForumOfEverything.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("TheForumOfEverything.Data.Models.Category", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
             modelBuilder.Entity("TheForumOfEverything.Data.Models.Comment", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PostId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TimeCreated")
                         .IsRequired()
@@ -291,14 +306,18 @@ namespace TheForumOfEverything.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ShortDescription")
+                    b.Property<string>("CategoryId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TimeCreated")
                         .IsRequired()
@@ -314,6 +333,8 @@ namespace TheForumOfEverything.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("UserId");
 
@@ -421,11 +442,19 @@ namespace TheForumOfEverything.Migrations
 
             modelBuilder.Entity("TheForumOfEverything.Data.Models.Post", b =>
                 {
+                    b.HasOne("TheForumOfEverything.Data.Models.Category", "Category")
+                        .WithMany("Posts")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("TheForumOfEverything.Data.Models.ApplicationUser", "User")
                         .WithMany("Posts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Category");
 
                     b.Navigation("User");
                 });
@@ -434,6 +463,11 @@ namespace TheForumOfEverything.Migrations
                 {
                     b.Navigation("Comments");
 
+                    b.Navigation("Posts");
+                });
+
+            modelBuilder.Entity("TheForumOfEverything.Data.Models.Category", b =>
+                {
                     b.Navigation("Posts");
                 });
 

@@ -17,7 +17,7 @@
     font-weight: 500
 }
 
-.form-control: focus {
+.form-control:focus {
     color: #000
 }
 

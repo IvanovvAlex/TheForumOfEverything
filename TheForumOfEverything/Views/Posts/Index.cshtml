@@ -26,8 +26,15 @@
                 <!-- Post preview-->
                 <div class="post-preview">
                     <a asp-controller="Posts" asp-action="Details" asp-route-id="@item.Id">
-                        <h2 class="post-title">@item.Title</h2>
-                        <h3 class="post-subtitle">@item.ShortDescription</h3>
+                        @if(item.Title.Length >= 30)
+                        {
+                            <h4 class="post-title">@item.Title.Substring(0, 30)...</h4>
+                        }
+                        else
+                        {
+                            <h4 class="post-title">@item.Title</h4>                            
+                        }
+                        <h6 class="post-subtitle">@item.Description</h6>
                     </a>
                     <p class="post-meta">
                         Posted by

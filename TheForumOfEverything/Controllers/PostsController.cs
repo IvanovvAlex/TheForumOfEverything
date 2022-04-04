@@ -19,7 +19,6 @@ namespace TheForumOfEverything.Controllers
             this.userManager = userManager;
         }
 
-        [Authorize]
         public IActionResult Index()
         {
             ICollection<PostViewModel> posts = postService.GetAll();
@@ -34,7 +33,7 @@ namespace TheForumOfEverything.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult Create(CreatePostViewModel model)
+        public async Task<IActionResult> Create(CreatePostViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -42,7 +41,7 @@ namespace TheForumOfEverything.Controllers
             }
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            PostViewModel newPostModel = postService.Create(model, userId);
+            PostViewModel newPostModel = await postService.Create(model, userId);
 
             if (newPostModel != null)
             {

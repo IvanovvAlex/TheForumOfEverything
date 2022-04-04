@@ -6,7 +6,7 @@ namespace TheForumOfEverything.Services.Posts
     {
         ICollection<PostViewModel> GetAll();
         ICollection<PostViewModel> GetLastNPosts(int n);
-        PostViewModel Create(CreatePostViewModel model, string userId);
+        Task<PostViewModel> Create(CreatePostViewModel model, string userId);
         PostViewModel GetById(string id);
         PostViewModel Edit(PostViewModel model);
         bool DeleteById(string id);

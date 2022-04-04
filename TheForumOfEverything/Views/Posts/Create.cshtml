@@ -18,32 +18,63 @@
     </div>
 </header>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-                <label asp-for="ShortDescription" class="control-label"></label>
-                <input asp-for="ShortDescription" class="form-control" />
-                <span asp-validation-for="ShortDescription" class="text-danger"></span>
-                <label asp-for="Text" class="control-label"></label>
-                <input asp-for="Text" class="form-control" />
-                <span asp-validation-for="Text" class="text-danger"></span>
+<div class="container-fluid">
+    <h1 class="mt-4">Create</h1>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card mb-4">
+                <form asp-controller="Posts" asp-action="Create" method="post" enctype="multipart/form-data">
+                    <div class="card-header">
+                        <i class="fas fa-pen-fancy mr-1"></i>
+                        Write a Post
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label asp-for="HeaderImage"></label>
+                            <div class="custom-file">
+                                <input asp-for="HeaderImage" class="custom-file-input" accept="image/*" required />
+                                <label class="custom-file-label">Choose file</label>
+                            </div>
+                            <span asp-validation-for="HeaderImage" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="@Model.Title"></label>
+                            <input asp-for="@Model.Title" class="form-control" required />
+                            <span asp-validation-for="@Model.Title" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="@Model.Description"></label>
+                            <input asp-for="@Model.Description" class="form-control" required />
+                            <span asp-validation-for="@Model.Description" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="@Model.Content"></label>
+                            <textarea asp-for="@Model.Content" class="form-control textarea" rows="8"></textarea>
+                            <span asp-validation-for="@Model.Content" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div>
+                        <p style="color: orangered; margin-bottom: 0;">Please Note:</p>
+                        <p>Your post will need to be approved before it is published to the main page. Please feel free to email me to approve your post.</p>
+                    </div>
+                    <button type="submit" class="btn btn-outline-primary post-btn">Post</button>
+
+                </form>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://cdn.ckeditor.com/ckeditor5/21.0.0/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('.textarea'))
+            .catch(error => {
+                console.error(error);
+            });
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+    </script>
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using TheForumOfEverything.Data;
 using TheForumOfEverything.Data.Models;
@@ -9,9 +10,11 @@ namespace TheForumOfEverything.Services.Posts
     public class PostService : IPostService
     {
         private readonly ApplicationDbContext context;
-        public PostService(ApplicationDbContext context)
+        private readonly IWebHostEnvironment webHostEnvironment;
+        public PostService(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             this.context = context;
+            this.webHostEnvironment = webHostEnvironment;
         }
         public ICollection<PostViewModel> GetAll()
         {
@@ -20,8 +23,8 @@ namespace TheForumOfEverything.Services.Posts
                 {
                     Id = x.Id,
                     Title = x.Title,
-                    ShortDescription = x.ShortDescription,
-                    Text = x.Text,
+                    Description = x.Description,
+                    Content = x.Content,
                     TimeCreated = x.TimeCreated,
                     User = x.User,
                 })
@@ -37,21 +40,21 @@ namespace TheForumOfEverything.Services.Posts
                 {
                     Id = x.Id,
                     Title = x.Title,
-                    ShortDescription = x.ShortDescription,
-                    Text = x.Text,
+                    Description = x.Description,
+                    Content = x.Content,
                     TimeCreated = x.TimeCreated,
                     User = x.User,
                 })
                 .ToHashSet();
             return posts;
         }
-        public PostViewModel Create(CreatePostViewModel model, string userId)
+        public async Task<PostViewModel> Create(CreatePostViewModel model, string userId)
         {
             string modelTitle = model.Title;
-            string modelShortDescription = model.ShortDescription;
-            string modelText = model.Text;
+            string modelShortDescription = model.Description;
+            string modelContent = model.Content;
 
-            bool isPostExist = context.Posts.Any(x => x.Title == modelText);
+            bool isPostExist = context.Posts.Any(x => x.Title == modelContent);
             if (isPostExist)
             {
                 return null;
@@ -60,18 +63,29 @@ namespace TheForumOfEverything.Services.Posts
             Post newPost = new Post()
             {
                 Title = modelTitle,
-                ShortDescription = modelShortDescription,
-                Text = modelText,
+                Description = modelShortDescription,
+                Content = modelContent,
                 
                 UserId = userId
             };
             context.Posts.Add(newPost);
             context.SaveChanges();
+
+            string webRootPath = webHostEnvironment.WebRootPath;
+            string pathToImage = $@"{webRootPath}\UserFiles\Posts\{newPost.Id}\HeaderImage.jpg";
+
+            EnsureFolder(pathToImage);
+
+            using (var fileStream = new FileStream(pathToImage, FileMode.Create))
+            {
+                 await model.HeaderImage.CopyToAsync(fileStream);
+            }
+
             string newPostId = newPost.Id;
             PostViewModel newTagViewModel = new PostViewModel()
             {
                 Id = newPostId,
-                Text = modelText,
+                Content = modelContent,
             };
             return newTagViewModel;
         }
@@ -88,8 +102,8 @@ namespace TheForumOfEverything.Services.Posts
             {
                 Id = post.Id,
                 Title = post.Title,
-                ShortDescription = post.ShortDescription,
-                Text = post.Text,
+                Description = post.Description,
+                Content = post.Content,
                 TimeCreated = post.TimeCreated,
                 User = post.User,
                 UserId = post.UserId
@@ -109,7 +123,7 @@ namespace TheForumOfEverything.Services.Posts
                 return null;
             }
 
-            post.Text = model.Text;
+            post.Content = model.Content;
             context.SaveChanges();
 
             return model;
@@ -125,6 +139,14 @@ namespace TheForumOfEverything.Services.Posts
             context.Posts.Remove(post);
             context.SaveChanges();
             return true;
+        }
+        private void EnsureFolder(string path)
+        {
+            string directoryName = Path.GetDirectoryName(path);
+            if (directoryName.Length > 0)
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(path));
+            }
         }
     }
 }

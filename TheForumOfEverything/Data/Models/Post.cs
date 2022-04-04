@@ -8,6 +8,12 @@ namespace TheForumOfEverything.Data.Models
         public string Id { get; init; } = Guid.NewGuid().ToString();
 
         [Required]
+        public string CategoryId { get; init; }
+
+        [Required]
+        public Category Category { get; set; }
+
+        [Required]
         public string UserId { get; set; }
 
         [Required]
@@ -22,9 +28,10 @@ namespace TheForumOfEverything.Data.Models
 
         [Required]
         [MaxLength(150)]
-        public string ShortDescription { get; set; }
+        public string Description { get; set; }
+
         [Required]
-        public string Text { get; set; }
+        public string Content { get; set; }
 
         public ICollection<Tag> Tags { get; set; } = new HashSet<Tag>();
         public ICollection<Comment> Comments { get; set; } = new HashSet<Comment>();
