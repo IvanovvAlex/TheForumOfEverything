@@ -3,27 +3,28 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using TheForumOfEverything.Data.Models;
-using TheForumOfEverything.Models.Comments;
+using TheForumOfEverything.Models.Categories;
+using TheForumOfEverything.Services.Categories;
 using TheForumOfEverything.Services.Comments;
 
 namespace TheForumOfEverything.Controllers
 {
-    public class CommentsController : Controller
+    public class CategoriesController : Controller
     {
-        private readonly ICommentService commentService;
+        private readonly ICategoryService categoryService;
         private readonly UserManager<ApplicationUser> userManager;
 
-        public CommentsController(ICommentService commentService, UserManager<ApplicationUser> userManager)
+        public CategoriesController(ICategoryService categoryService, UserManager<ApplicationUser> userManager)
         {
-            this.commentService = commentService;
+            this.categoryService = categoryService;
             this.userManager = userManager;
         }
 
         [Authorize]
         public IActionResult Index()
         {
-            ICollection<CommentViewModel> comments = commentService.GetAll();
-            return View(comments);
+            ICollection<CategoryViewModel> categories = categoryService.GetAll();
+            return View(categories);
         }
 
         [Authorize]
@@ -34,7 +35,7 @@ namespace TheForumOfEverything.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Create(CreateCommentViewModel model)
+        public async Task<IActionResult> Create(CreateCategoryViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -42,11 +43,11 @@ namespace TheForumOfEverything.Controllers
             }
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            CommentViewModel newCommentModel = await commentService.Create(model, userId);
+            CategoryViewModel newCategoryModel = await categoryService.Create(model, userId);
 
-            if (newCommentModel != null)
+            if (newCategoryModel != null)
             {
-                return Redirect($"/Comments/Details/{newCommentModel.Id}");
+                return Redirect($"/Categories/Details/{newCategoryModel.Id}");
             }
             return View(model);
         }
@@ -54,7 +55,7 @@ namespace TheForumOfEverything.Controllers
         [Authorize]
         public IActionResult Details(string id)
         {
-            CommentViewModel model = commentService.GetById(id);
+            CategoryViewModel model = categoryService.GetById(id);
             if (model == null)
             {
                 return NotFound();
@@ -65,7 +66,7 @@ namespace TheForumOfEverything.Controllers
         [Authorize]
         public IActionResult Edit(string id)
         {
-            CommentViewModel model = commentService.GetById(id);
+            CategoryViewModel model = categoryService.GetById(id);
             if (model == null)
             {
                 return NotFound();
@@ -76,28 +77,28 @@ namespace TheForumOfEverything.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult Edit(CommentViewModel model)
+        public IActionResult Edit(CategoryViewModel model)
         {
-            CommentViewModel editedComment = commentService.Edit(model);
-            if (editedComment == null)
+            CategoryViewModel editedCategory = categoryService.Edit(model);
+            if (editedCategory == null)
             {
                 return NotFound();
             }
             string id = model.Id;
 
-            return Redirect($"/Comments/Details/{id}");
+            return Redirect($"/Categories/Details/{id}");
         }
 
         [Authorize]
         public IActionResult Delete(string id)
         {
-            bool isDeleted = commentService.DeleteById(id);
+            bool isDeleted = categoryService.DeleteById(id);
             if (!isDeleted)
             {
                 return NotFound();
             }
 
-            return Redirect($"/Comments/");
+            return Redirect($"/Categories/");
         }
     }
 }
