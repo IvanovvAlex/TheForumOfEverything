@@ -26,30 +26,30 @@ namespace TheForumOfEverything.Controllers
             return View(comments);
         }
 
-        [Authorize]
-        public IActionResult Create()
-        {
-            return View();
-        }
+        //[Authorize]
+        //public IActionResult Create()
+        //{
+        //    return View();
+        //}
 
-        [Authorize]
-        [HttpPost]
-        public async Task<IActionResult> Create(CreateCommentViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return NotFound();
-            }
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        //[Authorize]
+        //[HttpPost]
+        //public async Task<IActionResult> Create(CreateCommentViewModel model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            CommentViewModel newCommentModel = await commentService.Create(model, userId);
+        //    CommentViewModel newCommentModel = await commentService.Create(model, userId);
 
-            if (newCommentModel != null)
-            {
-                return Redirect($"/Comments/Details/{newCommentModel.Id}");
-            }
-            return View(model);
-        }
+        //    if (newCommentModel != null)
+        //    {
+        //        return Redirect($"/Comments/Details/{newCommentModel.Id}");
+        //    }
+        //    return View(model);
+        //}
 
         [Authorize]
         public IActionResult Details(string id)

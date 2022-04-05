@@ -64,7 +64,7 @@ namespace TheForumOfEverything.Services.Categories
 
         public CategoryViewModel GetById(string id)
         {
-            Category category = context.Categories.FirstOrDefault(x => x.Id == id);
+            Category category = context.Categories.Include(p => p.Posts).FirstOrDefault(x => x.Id == id);
             if (category == null)
             {
                 return null;
@@ -74,6 +74,7 @@ namespace TheForumOfEverything.Services.Categories
             {
                 Id = category.Id,
                 Title = category.Title,
+                Posts = category.Posts
             };
 
             return model;

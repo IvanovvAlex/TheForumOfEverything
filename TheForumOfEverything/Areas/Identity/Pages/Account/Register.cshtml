@@ -4,12 +4,13 @@
     ViewData["Title"] = "Register";
 }
 <!-- Page Header-->
-<header class="masthead" style="background-image: url('/assets/img/contact-bg.jpg')">
+<header class="masthead" id="mastheadOnlyWithTitle" style="background-image: url('/assets/img/contact-bg.jpg')">
     <div class="container position-relative px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-7">
                 <div class="page-heading">
                     <h1>Register</h1>
+                    <p>Create a new account.</p>
 @*                    <span class="subheading">Have questions? I have answers.</span>
 *@                </div>
             </div>
@@ -17,13 +18,9 @@
     </div>
 </header>
 
-
-<h1>@ViewData["Title"]</h1>
-
 <div class="row">
     <div class="col-md-4">
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h2>Create a new account.</h2>
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-floating">
@@ -44,7 +41,7 @@
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>
     </div>
-    <div class="col-md-6 col-md-offset-2">
+@*    <div class="col-md-6 col-md-offset-2">
         <section>
             <h3>Use another service to register.</h3>
             <hr />
@@ -73,7 +70,7 @@
                 }
             }
         </section>
-    </div>
+    </div>*@
 </div>
 
 @section Scripts {

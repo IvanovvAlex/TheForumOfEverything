@@ -65,7 +65,7 @@ namespace TheForumOfEverything.Services.Posts
                 Title = modelTitle,
                 Description = modelShortDescription,
                 Content = modelContent,
-                
+                CategoryId = model.CategoryId,
                 UserId = userId
             };
             context.Posts.Add(newPost);
@@ -92,7 +92,7 @@ namespace TheForumOfEverything.Services.Posts
 
         public PostViewModel GetById(string id)
         {
-            Post post = context.Posts.Include(u => u.User).FirstOrDefault(x => x.Id == id);
+            Post post = context.Posts.Include(u => u.User).Include(c => c.Category).Include(c => c.Comments).FirstOrDefault(x => x.Id == id);
             if (post == null)
             {
                 return null;
@@ -106,7 +106,11 @@ namespace TheForumOfEverything.Services.Posts
                 Content = post.Content,
                 TimeCreated = post.TimeCreated,
                 User = post.User,
-                UserId = post.UserId
+                UserId = post.UserId,
+                Category = post.Category,
+                CategoryId = post.CategoryId,
+                Comments = post.Comments,
+                ImgUrl = "/assets/img/it-category.jpg"
             };
 
             return model;

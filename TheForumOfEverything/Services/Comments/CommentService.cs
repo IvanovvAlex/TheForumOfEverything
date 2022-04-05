@@ -35,19 +35,15 @@ namespace TheForumOfEverything.Services.Comments
                 .ToHashSet();
             return comments;
         }
-        public async Task<CommentViewModel> Create(CreateCommentViewModel model, string userId)
+        public async Task<CommentViewModel> Create(CreateCommentViewModel model, string userId, string postId)
         {
             string modelContent = model.Content;
-
-            bool isCommentExist = context.Comments.Any(x => x.Content == modelContent);
-            if (isCommentExist)
-            {
-                return null;
-            }
 
             Comment newComment = new Comment()
             {
                 Content = modelContent,
+                UserId = userId,
+                PostId = postId
             };
             context.Comments.Add(newComment);
             context.SaveChanges();

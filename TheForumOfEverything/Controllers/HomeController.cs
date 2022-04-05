@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using TheForumOfEverything.Models;
+using TheForumOfEverything.Models.Categories;
 using TheForumOfEverything.Models.Posts;
+using TheForumOfEverything.Services.Categories;
 using TheForumOfEverything.Services.Posts;
 
 namespace TheForumOfEverything.Controllers
@@ -10,17 +12,19 @@ namespace TheForumOfEverything.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IPostService postService;
+        private readonly ICategoryService categoryService;
 
-        public HomeController(ILogger<HomeController> logger, IPostService postService)
+        public HomeController(ILogger<HomeController> logger, IPostService postService, ICategoryService categoryService)
         {
             _logger = logger;
             this.postService = postService;
+            this.categoryService = categoryService;
         }
 
         public IActionResult Index()
         {
-            ICollection<PostViewModel> posts = postService.GetLastNPosts(5);
-            return View(posts);
+            ICollection<CategoryViewModel> categories = categoryService.GetAll();
+            return View(categories);
         }
 
         public IActionResult Privacy()
