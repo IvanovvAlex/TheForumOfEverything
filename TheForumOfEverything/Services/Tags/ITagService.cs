@@ -4,10 +4,10 @@ namespace TheForumOfEverything.Services.Tags
 {
     public interface ITagService
     {
-        ICollection<TagViewModel> GetAll();
-        TagViewModel Create(CreateTagViewModel model);
-        TagViewModel GetById(string id);
-        TagViewModel Edit(TagViewModel model);
-        bool DeleteById(string id);
+        Task<ICollection<TagViewModel>> GetAll();
+        Task<TagViewModel> Create(CreateTagViewModel model);
+        Task<TagViewModel> GetById(string id);
+        Task<TagViewModel> Edit(TagViewModel model);
+        Task<bool> DeleteById(string id);
     }
 }

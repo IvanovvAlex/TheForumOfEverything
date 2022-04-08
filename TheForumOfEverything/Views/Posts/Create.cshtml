@@ -21,9 +21,9 @@
 </header>
 <hr />
 <div class="container-fluid">
-    <h1 class="mt-4">Create</h1>
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-6" style="margin: auto; width: 50%;">
+                <h1 class="mt-4">Create</h1>
             <div class="card mb-4">
                 <form asp-controller="Posts" asp-action="Create" method="post" enctype="multipart/form-data">
                     <div class="card-header">
@@ -35,14 +35,6 @@
                         <label asp-for="CategoryId" class="control-label">Category</label>
                         <select asp-for="CategoryId" class ="form-control" asp-items="ViewBag.CategoryId"></select>
                     </div>
-                        <div class="form-group">
-                            <label asp-for="HeaderImage"></label>
-                            <div class="custom-file">
-                                <input asp-for="HeaderImage" class="custom-file-input" accept="image/*" required />
-                                <label class="custom-file-label">Choose file</label>
-                            </div>
-                            <span asp-validation-for="HeaderImage" class="text-danger"></span>
-                        </div>
                         <div class="form-group">
                             <label asp-for="@Model.Title"></label>
                             <input asp-for="@Model.Title" class="form-control" required />
@@ -63,7 +55,7 @@
                         <p style="color: orangered; margin-bottom: 0;">Please Note:</p>
                         <p>Your post will need to be approved before it is published to the main page. Please feel free to email me to approve your post.</p>
                     </div>
-                    <button type="submit" class="btn btn-outline-primary post-btn">Post</button>
+                    <button type="submit" class="btn btn-outline-primary post-btn" style="margin: auto; width: 100%;">Post</button>
 
                 </form>
             </div>

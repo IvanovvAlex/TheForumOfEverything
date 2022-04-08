@@ -4,11 +4,11 @@ namespace TheForumOfEverything.Services.Posts
 {
     public interface IPostService
     {
-        ICollection<PostViewModel> GetAll();
-        ICollection<PostViewModel> GetLastNPosts(int n);
+        Task<ICollection<PostViewModel>> GetAll();
+        Task<ICollection<PostViewModel>> GetLastNPosts(int n);
         Task<PostViewModel> Create(CreatePostViewModel model, string userId);
-        PostViewModel GetById(string id);
-        PostViewModel Edit(PostViewModel model);
-        bool DeleteById(string id);
+        Task<PostViewModel> GetById(string id);
+        Task<PostViewModel> Edit(PostViewModel model);
+        Task<bool> DeleteById(string id);
     }
 }

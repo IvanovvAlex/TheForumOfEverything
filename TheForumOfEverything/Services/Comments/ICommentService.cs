@@ -1,14 +1,15 @@
-﻿using TheForumOfEverything.Models.Comments;
+﻿using TheForumOfEverything.Data.Models;
+using TheForumOfEverything.Models.Comments;
 
 namespace TheForumOfEverything.Services.Comments
 {
     public interface ICommentService
     {
-        ICollection<CommentViewModel> GetAll();
-        ICollection<CommentViewModel> GetLastNComments(int n);
-        Task<CommentViewModel> Create(CreateCommentViewModel model, string userId, string postId);
-        CommentViewModel GetById(string id);
-        CommentViewModel Edit(CommentViewModel model);
-        bool DeleteById(string id);
+        Task<ICollection<CommentViewModel>> GetAll();
+        Task<ICollection<CommentViewModel>> GetLastNComments(int n);
+        Task<CommentViewModel> Create(CreateCommentViewModel model, ApplicationUser user, string userId, string postId);
+        Task<CommentViewModel> GetById(string id);
+        Task<CommentViewModel> Edit(CommentViewModel model);
+        Task<bool> DeleteById(string id);
     }
 }

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using TheForumOfEverything.Data;
 using TheForumOfEverything.Services.Posts;
 using TheForumOfEverything.Services.Tags;
-using TheForumOfEverything.Services.ApplicationUser;
+using TheForumOfEverything.Services.ApplicationUsers;
 using TheForumOfEverything.Data.Models;
 using TheForumOfEverything.Services.Comments;
 using TheForumOfEverything.Services.Categories;

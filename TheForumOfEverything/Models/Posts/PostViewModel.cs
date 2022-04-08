@@ -17,8 +17,8 @@ namespace TheForumOfEverything.Models.Posts
         public string Content { get; set; }
         public string ImgUrl { get; set; }
 
-        [Required, Display(Name = "Header Image")]
-        public IFormFile HeaderImage { get; set; }
+        //[ Display(Name = "Header Image")]
+        //public IFormFile HeaderImage { get; set; }
         public ICollection<Tag> Tags { get; set; }
         public ICollection<Comment> Comments { get; set; } 
     }

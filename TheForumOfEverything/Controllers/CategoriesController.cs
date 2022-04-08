@@ -21,14 +21,14 @@ namespace TheForumOfEverything.Controllers
         }
 
         [Authorize]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            ICollection<CategoryViewModel> categories = categoryService.GetAll();
+            ICollection<CategoryViewModel> categories = await categoryService.GetAll();
             return View(categories);
         }
 
         [Authorize]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             return View();
         }
@@ -53,9 +53,9 @@ namespace TheForumOfEverything.Controllers
         }
 
         [Authorize]
-        public IActionResult Details(string id)
+        public async Task<IActionResult> Details(string id)
         {
-            CategoryViewModel model = categoryService.GetById(id);
+            CategoryViewModel model = await categoryService.GetById(id);
             if (model == null)
             {
                 return NotFound();
@@ -64,9 +64,9 @@ namespace TheForumOfEverything.Controllers
         }
 
         [Authorize]
-        public IActionResult Edit(string id)
+        public async Task<IActionResult> Edit(string id)
         {
-            CategoryViewModel model = categoryService.GetById(id);
+            CategoryViewModel model = await categoryService.GetById(id);
             if (model == null)
             {
                 return NotFound();
@@ -77,9 +77,9 @@ namespace TheForumOfEverything.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult Edit(CategoryViewModel model)
+        public async Task<IActionResult> Edit(CategoryViewModel model)
         {
-            CategoryViewModel editedCategory = categoryService.Edit(model);
+            CategoryViewModel editedCategory = await categoryService.Edit(model);
             if (editedCategory == null)
             {
                 return NotFound();
@@ -90,9 +90,9 @@ namespace TheForumOfEverything.Controllers
         }
 
         [Authorize]
-        public IActionResult Delete(string id)
+        public async Task<IActionResult> Delete(string id)
         {
-            bool isDeleted = categoryService.DeleteById(id);
+            bool isDeleted = await categoryService.DeleteById(id);
             if (!isDeleted)
             {
                 return NotFound();

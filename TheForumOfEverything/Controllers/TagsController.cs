@@ -19,28 +19,28 @@ namespace TheForumOfEverything.Controllers
         }
 
         [Authorize]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            ICollection<TagViewModel> tags = tagService.GetAll();
+            ICollection<TagViewModel> tags = await tagService.GetAll();
             return View(tags);
         }
 
         [Authorize]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             return View();
         }
 
         [Authorize]
         [HttpPost]
-        public IActionResult Create(CreateTagViewModel model)
+        public async Task<IActionResult> Create(CreateTagViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return NotFound();
             }
 
-            TagViewModel newTagModel = tagService.Create(model);
+            TagViewModel newTagModel = await tagService.Create(model);
 
             if (newTagModel != null)
             {
@@ -50,9 +50,9 @@ namespace TheForumOfEverything.Controllers
         }
 
         [Authorize]
-        public IActionResult Details(string id)
+        public async Task<IActionResult> Details(string id)
         {
-            TagViewModel model = tagService.GetById(id);
+            TagViewModel model = await tagService.GetById(id);
             if (model == null)
             {
                 return NotFound();
@@ -61,9 +61,9 @@ namespace TheForumOfEverything.Controllers
         }
 
         [Authorize]
-        public IActionResult Edit(string id)
+        public async Task<IActionResult> Edit(string id)
         {
-            TagViewModel model = tagService.GetById(id);
+            TagViewModel model = await tagService.GetById(id);
             if (model == null)
             {
                 return NotFound();
@@ -74,9 +74,9 @@ namespace TheForumOfEverything.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult Edit(TagViewModel model)
+        public async Task<IActionResult> Edit(TagViewModel model)
         {
-            TagViewModel editedTag = tagService.Edit(model);
+            TagViewModel editedTag = await tagService.Edit(model);
             if (editedTag == null)
             {
                 return NotFound();
@@ -87,9 +87,9 @@ namespace TheForumOfEverything.Controllers
         }
 
         [Authorize]
-        public IActionResult Delete(string id)
+        public async Task<IActionResult> Delete(string id)
         {
-            bool isDeleted = tagService.DeleteById(id);
+            bool isDeleted = await tagService.DeleteById(id);
             if (!isDeleted)
             {
                 return NotFound();

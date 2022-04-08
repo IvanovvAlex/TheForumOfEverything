@@ -27,14 +27,14 @@ namespace TheForumOfEverything.Controllers
             this.commentService = commentService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            ICollection<PostViewModel> posts = postService.GetAll();
+            ICollection<PostViewModel> posts = await postService.GetAll();
             return View(posts);
         }
 
         [Authorize]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             ViewData["CategoryId"] = new SelectList(context.Categories, "Id", "Title");
 
@@ -61,9 +61,9 @@ namespace TheForumOfEverything.Controllers
         }
 
         [Authorize]
-        public IActionResult Details(string id)
+        public async Task<IActionResult> Details(string id)
         {
-            PostViewModel model = postService.GetById(id);
+            PostViewModel model = await postService.GetById(id);
             if (model == null)
             {
                 return NotFound();
@@ -72,9 +72,9 @@ namespace TheForumOfEverything.Controllers
         }
 
         [Authorize]
-        public IActionResult Edit(string id)
+        public async Task<IActionResult> Edit(string id)
         {
-            PostViewModel model = postService.GetById(id);
+            PostViewModel model = await postService.GetById(id);
             if (model == null)
             {
                 return NotFound();
@@ -85,9 +85,9 @@ namespace TheForumOfEverything.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult Edit(PostViewModel model)
+        public async Task<IActionResult> Edit(PostViewModel model)
         {
-            PostViewModel editedPost = postService.Edit(model);
+            PostViewModel editedPost = await postService.Edit(model);
             if (editedPost == null)
             {
                 return NotFound();
@@ -98,27 +98,15 @@ namespace TheForumOfEverything.Controllers
         }
 
         [Authorize]
-        public IActionResult Delete(string id)
+        public async Task<IActionResult> Delete(string id)
         {
-            bool isDeleted = postService.DeleteById(id);
+            bool isDeleted = await postService.DeleteById(id);
             if (!isDeleted)
             {
                 return NotFound();
             }
 
             return Redirect($"/Posts/");
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Details(string postId,CreateCommentViewModel commentModel)
-        {
-            if (ModelState.IsValid)
-            {
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-                commentService.Create(commentModel, userId, postId);
-            }
-            return Redirect($"/Posts/Details?{postId}");
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using TheForumOfEverything.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using TheForumOfEverything.Data;
 using TheForumOfEverything.Data.Models;
 using TheForumOfEverything.Models.Tags;
 
@@ -11,31 +12,31 @@ namespace TheForumOfEverything.Services.Tags
         {
             this.context = context;
         }
-        public ICollection<TagViewModel> GetAll()
+        public async Task<ICollection<TagViewModel>> GetAll()
         {
-            ICollection<TagViewModel> tags = context.Tags
+            ICollection<TagViewModel> tags = await context.Tags
                 .Select(x => new TagViewModel()
                 {
                     Id = x.Id,
                     Text = x.Text,
                 })
-                .ToHashSet();
+                .ToListAsync();
 
             return tags;
         }
-        public TagViewModel Create(CreateTagViewModel model)
+        public async Task<TagViewModel> Create(CreateTagViewModel model)
         {
             string modelText = model.Text;
 
-            bool isTagExist = context.Tags.Any(x => x.Text == modelText);
+            bool isTagExist = await context.Tags.AnyAsync(x => x.Text == modelText);
             if (isTagExist)
             {
                 return null;
             }
 
             Tag newTag = new Tag(modelText);
-            context.Tags.Add(newTag);
-            context.SaveChanges();
+            await context.Tags.AddAsync(newTag);
+            context.SaveChangesAsync();
             string newTagId = newTag.Id;
             TagViewModel newTagViewModel = new TagViewModel()
             {
@@ -45,9 +46,9 @@ namespace TheForumOfEverything.Services.Tags
             return newTagViewModel;
         }
 
-        public TagViewModel GetById(string id)
+        public async Task<TagViewModel> GetById(string id)
         {
-            Tag tag = context.Tags.FirstOrDefault(x => x.Id == id);
+            Tag tag = await context.Tags.FirstOrDefaultAsync(x => x.Id == id);
             if (tag == null)
             {
                 return null;
@@ -62,31 +63,31 @@ namespace TheForumOfEverything.Services.Tags
             return model;
         }
 
-        public TagViewModel Edit(TagViewModel model)
+        public async Task<TagViewModel> Edit(TagViewModel model)
         {
             string modelId = model.Id;
 
-            Tag tag = context.Tags.FirstOrDefault(x => x.Id == modelId);
+            Tag tag = await context.Tags.FirstOrDefaultAsync(x => x.Id == modelId);
             if (tag == null)
             {
                 return null;
             }
 
             tag.Text = model.Text;
-            context.SaveChanges();
+            context.SaveChangesAsync();
 
             return model;
         }
 
-        public bool DeleteById(string id)
+        public async Task<bool> DeleteById(string id)
         {
-            Tag tag = context.Tags.FirstOrDefault(x => x.Id == id);
+            Tag tag = await context.Tags.FirstOrDefaultAsync(x => x.Id == id);
             if (tag == null)
             {
                 return false;
             }
             context.Tags.Remove(tag);
-            context.SaveChanges();
+            context.SaveChangesAsync();
             return true;
         }
     }

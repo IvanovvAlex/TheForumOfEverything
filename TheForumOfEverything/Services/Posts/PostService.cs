@@ -16,9 +16,9 @@ namespace TheForumOfEverything.Services.Posts
             this.context = context;
             this.webHostEnvironment = webHostEnvironment;
         }
-        public ICollection<PostViewModel> GetAll()
+        public async Task<ICollection<PostViewModel>> GetAll()
         {
-            ICollection<PostViewModel> posts = context.Posts
+            ICollection<PostViewModel> posts = await context.Posts
                 .Select(x => new PostViewModel()
                 {
                     Id = x.Id,
@@ -28,13 +28,13 @@ namespace TheForumOfEverything.Services.Posts
                     TimeCreated = x.TimeCreated,
                     User = x.User,
                 })
-                .ToHashSet();
+                .ToListAsync();
 
             return posts;
         }
-        public ICollection<PostViewModel> GetLastNPosts(int n)
+        public async Task<ICollection<PostViewModel>> GetLastNPosts(int n)
         {
-            ICollection<PostViewModel> posts = context.Posts
+            ICollection<PostViewModel> posts = await context.Posts
                 .Skip(Math.Max(0, context.Posts.Count() - n))
                 .Select(x => new PostViewModel()
                 {
@@ -45,7 +45,7 @@ namespace TheForumOfEverything.Services.Posts
                     TimeCreated = x.TimeCreated,
                     User = x.User,
                 })
-                .ToHashSet();
+                .ToListAsync();
             return posts;
         }
         public async Task<PostViewModel> Create(CreatePostViewModel model, string userId)
@@ -54,7 +54,7 @@ namespace TheForumOfEverything.Services.Posts
             string modelShortDescription = model.Description;
             string modelContent = model.Content;
 
-            bool isPostExist = context.Posts.Any(x => x.Title == modelContent);
+            bool isPostExist = await context.Posts.AnyAsync(x => x.Title == modelContent);
             if (isPostExist)
             {
                 return null;
@@ -68,18 +68,18 @@ namespace TheForumOfEverything.Services.Posts
                 CategoryId = model.CategoryId,
                 UserId = userId
             };
-            context.Posts.Add(newPost);
-            context.SaveChanges();
+            await context.Posts.AddAsync(newPost);
+            context.SaveChangesAsync();
 
-            string webRootPath = webHostEnvironment.WebRootPath;
-            string pathToImage = $@"{webRootPath}\UserFiles\Posts\{newPost.Id}\HeaderImage.jpg";
+            //string webRootPath = webHostEnvironment.WebRootPath;
+            //string pathToImage = $@"{webRootPath}\UserFiles\Posts\{newPost.Id}\HeaderImage.jpg";
 
-            EnsureFolder(pathToImage);
+            //EnsureFolder(pathToImage);
 
-            using (var fileStream = new FileStream(pathToImage, FileMode.Create))
-            {
-                 await model.HeaderImage.CopyToAsync(fileStream);
-            }
+            //using (var fileStream = new FileStream(pathToImage, FileMode.Create))
+            //{
+            //     await model.HeaderImage.CopyToAsync(fileStream);
+            //}
 
             string newPostId = newPost.Id;
             PostViewModel newTagViewModel = new PostViewModel()
@@ -90,9 +90,9 @@ namespace TheForumOfEverything.Services.Posts
             return newTagViewModel;
         }
 
-        public PostViewModel GetById(string id)
+        public async Task<PostViewModel> GetById(string id)
         {
-            Post post = context.Posts.Include(u => u.User).Include(c => c.Category).Include(c => c.Comments).FirstOrDefault(x => x.Id == id);
+            Post post = await context.Posts.Include(u => u.User).Include(c => c.Category).Include(c => c.Comments).FirstOrDefaultAsync(x => x.Id == id);
             if (post == null)
             {
                 return null;
@@ -116,32 +116,32 @@ namespace TheForumOfEverything.Services.Posts
             return model;
         }
 
-        public PostViewModel Edit(PostViewModel model)
+        public async Task<PostViewModel> Edit(PostViewModel model)
         {
             string modelId = model.Id;
 
-            Post post = context.Posts
-                .FirstOrDefault(x => x.Id == modelId);
+            Post post = await context.Posts
+                .FirstOrDefaultAsync(x => x.Id == modelId);
             if (post == null)
             {
                 return null;
             }
 
             post.Content = model.Content;
-            context.SaveChanges();
+            context.SaveChangesAsync();
 
             return model;
         }
 
-        public bool DeleteById(string id)
+        public async Task<bool> DeleteById(string id)
         {
-            Post post = context.Posts.FirstOrDefault(x => x.Id == id);
+            Post post = await context.Posts.FirstOrDefaultAsync(x => x.Id == id);
             if (post == null)
             {
                 return false;
             }
             context.Posts.Remove(post);
-            context.SaveChanges();
+            context.SaveChangesAsync();
             return true;
         }
         private void EnsureFolder(string path)

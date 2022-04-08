@@ -20,41 +20,43 @@ namespace TheForumOfEverything.Controllers
         }
 
         [Authorize]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            ICollection<CommentViewModel> comments = commentService.GetAll();
+            ICollection<CommentViewModel> comments = await commentService.GetAll();
             return View(comments);
         }
 
-        //[Authorize]
-        //public IActionResult Create()
-        //{
-        //    return View();
-        //}
-
-        //[Authorize]
-        //[HttpPost]
-        //public async Task<IActionResult> Create(CreateCommentViewModel model)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-        //    CommentViewModel newCommentModel = await commentService.Create(model, userId);
-
-        //    if (newCommentModel != null)
-        //    {
-        //        return Redirect($"/Comments/Details/{newCommentModel.Id}");
-        //    }
-        //    return View(model);
-        //}
+        [Authorize]
+        public async Task<IActionResult> Create()
+        {
+            return View();
+        }
 
         [Authorize]
-        public IActionResult Details(string id)
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateCommentViewModel model)
         {
-            CommentViewModel model = commentService.GetById(id);
+            var postId = model.PostId;
+
+            if (!ModelState.IsValid)
+            {
+                return Redirect($"/Posts/Details/{postId}");
+            }
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await userManager.GetUserAsync(HttpContext.User);
+            CommentViewModel newCommentModel = await commentService.Create(model, user, userId, postId);
+
+            if (newCommentModel != null)
+            {
+                return Redirect($"/Posts/Details/{postId}");
+            }
+            return View(model);
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Details(string id)
+        {
+            CommentViewModel model = await commentService.GetById(id);
             if (model == null)
             {
                 return NotFound();
@@ -63,9 +65,9 @@ namespace TheForumOfEverything.Controllers
         }
 
         [Authorize]
-        public IActionResult Edit(string id)
+        public async Task<IActionResult> Edit(string id)
         {
-            CommentViewModel model = commentService.GetById(id);
+            CommentViewModel model = await commentService.GetById(id);
             if (model == null)
             {
                 return NotFound();
@@ -76,9 +78,9 @@ namespace TheForumOfEverything.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult Edit(CommentViewModel model)
+        public async Task<IActionResult> Edit(CommentViewModel model)
         {
-            CommentViewModel editedComment = commentService.Edit(model);
+            CommentViewModel editedComment = await commentService.Edit(model);
             if (editedComment == null)
             {
                 return NotFound();
@@ -89,9 +91,9 @@ namespace TheForumOfEverything.Controllers
         }
 
         [Authorize]
-        public IActionResult Delete(string id)
+        public async Task<IActionResult> Delete(string id)
         {
-            bool isDeleted = commentService.DeleteById(id);
+            bool isDeleted = await commentService.DeleteById(id);
             if (!isDeleted)
             {
                 return NotFound();

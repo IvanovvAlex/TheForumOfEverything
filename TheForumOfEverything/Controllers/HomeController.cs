@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Net;
+using System.Net.Mail;
 using TheForumOfEverything.Models;
 using TheForumOfEverything.Models.Categories;
 using TheForumOfEverything.Models.Posts;
@@ -21,29 +23,24 @@ namespace TheForumOfEverything.Controllers
             this.categoryService = categoryService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            ICollection<CategoryViewModel> categories = categoryService.GetAll();
+            ICollection<CategoryViewModel> categories = await categoryService.GetAll();
             return View(categories);
         }
 
-        public IActionResult Privacy()
+        public async Task<IActionResult> Privacy()
         {
             return View();
         }
 
-        public IActionResult About()
-        {
-            return View();
-        }
-
-        public IActionResult Contact()
+        public async Task<IActionResult> About()
         {
             return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public async Task<IActionResult> Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }

@@ -9,7 +9,7 @@ namespace TheForumOfEverything.Models.Posts
         public string Description { get; set; }
         public string Content { get; set; }
 
-        [Required, Display(Name = "Header Image")]
-        public IFormFile HeaderImage { get; set; }
+        //[ Display(Name = "Header Image")]
+        //public IFormFile HeaderImage { get; set; }
     }
 }

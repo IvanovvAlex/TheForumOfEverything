@@ -12,19 +12,19 @@ namespace TheForumOfEverything.Services.Categories
         {
             this.context = context;
         }
-        public ICollection<CategoryViewModel> GetAll()
+        public async Task<ICollection<CategoryViewModel>> GetAll()
         {
-            ICollection<CategoryViewModel> categories = context.Categories
+            ICollection<CategoryViewModel> categories = await context.Categories
                 .Select(x => new CategoryViewModel()
                 {
                     Id = x.Id,
                     Title = x.Title,
                 })
-                .ToHashSet();
+                .ToListAsync();
 
             return categories;
         }
-        public ICollection<CategoryViewModel> GetLastNCategories(int n)
+        public async Task<ICollection<CategoryViewModel>> GetLastNCategories(int n)
         {
             ICollection<CategoryViewModel> categories = context.Categories
                 .Skip(Math.Max(0, context.Categories.Count() - n))
@@ -40,7 +40,7 @@ namespace TheForumOfEverything.Services.Categories
         {
             string modelTitle = model.Title;
 
-            bool isCategoryExist = context.Categories.Any(x => x.Title == modelTitle);
+            bool isCategoryExist = await context.Categories.AnyAsync(x => x.Title == modelTitle);
             if (isCategoryExist)
             {
                 return null;
@@ -50,8 +50,8 @@ namespace TheForumOfEverything.Services.Categories
             {
                 Title = modelTitle,
             };
-            context.Categories.Add(newCategory);
-            context.SaveChanges();
+            await context.Categories.AddAsync(newCategory);
+            await context.SaveChangesAsync();
 
           
             string newCategoryId = newCategory.Id;
@@ -62,9 +62,9 @@ namespace TheForumOfEverything.Services.Categories
             return newCategoryViewModel;
         }
 
-        public CategoryViewModel GetById(string id)
+        public async Task<CategoryViewModel> GetById(string id)
         {
-            Category category = context.Categories.Include(p => p.Posts).FirstOrDefault(x => x.Id == id);
+            Category category = await context.Categories.Include(p => p.Posts).FirstOrDefaultAsync(x => x.Id == id);
             if (category == null)
             {
                 return null;
@@ -80,32 +80,32 @@ namespace TheForumOfEverything.Services.Categories
             return model;
         }
 
-        public CategoryViewModel Edit(CategoryViewModel model)
+        public async Task<CategoryViewModel> Edit(CategoryViewModel model)
         {
             string modelId = model.Id;
 
-            Category category = context.Categories
-                .FirstOrDefault(x => x.Id == modelId);
+            Category category = await context.Categories
+                .FirstOrDefaultAsync(x => x.Id == modelId);
             if (category == null)
             {
                 return null;
             }
 
             category.Title = model.Title;
-            context.SaveChanges();
+            await context.SaveChangesAsync();
 
             return model;
         }
 
-        public bool DeleteById(string id)
+        public async Task<bool> DeleteById(string id)
         {
-            Category category = context.Categories.FirstOrDefault(x => x.Id == id);
+            Category category = await context.Categories.FirstOrDefaultAsync(x => x.Id == id);
             if (category == null)
             {
                 return false;
             }
             context.Categories.Remove(category);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
             return true;
         }
     }
