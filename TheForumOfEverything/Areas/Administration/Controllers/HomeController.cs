@@ -11,5 +11,13 @@ namespace TheForumOfEverything.Areas.Administration.Controllers
         {
             return View();
         }
+        public IActionResult AddAdmins()
+        {
+            return View();
+        }
+        public IActionResult ApprovePosts()
+        {
+            return View();
+        }
     }
 }
