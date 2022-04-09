@@ -1,0 +1,26 @@
+﻿@model IEnumerable<TheForumOfEverything.Models.Posts.PostViewModel>
+
+<br>
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+              @foreach (var item in Model){
+                <!-- Post preview-->
+                <div class="post-preview">
+                    <a asp-area="" asp-controller="Posts" asp-action="Details" asp-route-id="@item.Id">
+                        @if(item.Title.Length >= 30)
+                        {
+                            <h4 class="post-title">@item.Title.Substring(0, 30)...</h4>
+                        }
+                        else
+                        {
+                            <h4 class="post-title">@item.Title</h4>                            
+                        }
+                    </a>
+                </div>
+                <!-- Divider-->
+                <hr class="my-4" />
+               }
+            </div>
+        </div>
+    </div>

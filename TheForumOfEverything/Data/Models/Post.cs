@@ -23,6 +23,9 @@ namespace TheForumOfEverything.Data.Models
         public string TimeCreated { get; init; } = DateTime.Now.ToString();
 
         [Required]
+        public bool IsApproved { get; set; } = false;
+
+        [Required]
         [MaxLength(100)]
         public string Title { get; set; }
 

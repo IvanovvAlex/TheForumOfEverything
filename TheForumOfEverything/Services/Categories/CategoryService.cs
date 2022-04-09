@@ -64,7 +64,7 @@ namespace TheForumOfEverything.Services.Categories
 
         public async Task<CategoryViewModel> GetById(string id)
         {
-            Category category = await context.Categories.Include(p => p.Posts).FirstOrDefaultAsync(x => x.Id == id);
+            Category category = await context.Categories.Include(p => p.Posts.Where(x =>x.IsApproved)).FirstOrDefaultAsync(x => x.Id == id);
             if (category == null)
             {
                 return null;

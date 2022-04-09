@@ -35,7 +35,7 @@
                     <ul class="navbar-nav ms-auto py-4 py-lg-0">
                         @if(User.IsInRole("Admin"))
                     {
-                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-area="Administration" asp-action="Index" style="color:red">Administration</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-area="Administration" asp-controller="Home" asp-action="Index" style="color:red">Administration</a></li>
                     }
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-area="" asp-controller="Posts" asp-action="Index">Posts</a></li>
@@ -46,6 +46,7 @@
                         }
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a></li>
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-area="" asp-controller="Home" asp-action="About">About</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-area="" asp-controller="ApplicationUsers" asp-action="Index">Users</a></li>
                     </ul>
                         <partial name="_LoginPartial" />
                 </div>

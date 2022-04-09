@@ -12,6 +12,7 @@ namespace TheForumOfEverything.Models.Posts
         public string UserId { get; set; }
         public ApplicationUser User { get; set; }
         public string TimeCreated { get; set; }
+        public bool IsApproved { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string Content { get; set; }

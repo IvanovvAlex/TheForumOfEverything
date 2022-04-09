@@ -5,13 +5,13 @@ using TheForumOfEverything.Data;
 using TheForumOfEverything.Data.Models;
 using TheForumOfEverything.Models.Posts;
 
-namespace TheForumOfEverything.Services.Posts
+namespace TheForumOfEverything.Areas.Administration.Services
 {
-    public class PostService : IPostService
+    public class PostAdminService : IPostAdminService
     {
         private readonly ApplicationDbContext context;
         private readonly IWebHostEnvironment webHostEnvironment;
-        public PostService(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
+        public PostAdminService(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             this.context = context;
             this.webHostEnvironment = webHostEnvironment;
@@ -19,7 +19,7 @@ namespace TheForumOfEverything.Services.Posts
         public async Task<ICollection<PostViewModel>> GetAll()
         {
             ICollection<PostViewModel> posts = await context.Posts
-                .Where(x => x.IsApproved)
+                .Where(x => !x.IsApproved)
                 .Select(x => new PostViewModel()
                 {
                     Id = x.Id,
@@ -113,7 +113,6 @@ namespace TheForumOfEverything.Services.Posts
                 UserId = post.UserId,
                 Category = post.Category,
                 CategoryId = post.CategoryId,
-                IsApproved = post.IsApproved,
                 Comments = post.Comments.OrderByDescending(x => x.TimeCreated).ToList(),
                 ImgUrl = "/assets/img/it-category.jpg"
             };
@@ -150,18 +149,7 @@ namespace TheForumOfEverything.Services.Posts
                 return false;
             }
             context.Posts.Remove(post);
-            await context.SaveChangesAsync();
-            return true;
-        }
-        public async Task<bool> ApproveById(string id)
-        {
-            Post post = await context.Posts.FirstOrDefaultAsync(x => x.Id == id);
-            if (post == null)
-            {
-                return false;
-            }
-            post.IsApproved = true;
-            await context.SaveChangesAsync();
+            context.SaveChangesAsync();
             return true;
         }
         private void EnsureFolder(string path)

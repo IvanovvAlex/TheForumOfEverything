@@ -110,5 +110,17 @@ namespace TheForumOfEverything.Controllers
 
             return Redirect($"/Posts/");
         }
+
+        [Authorize]
+        public async Task<IActionResult> Approve(string id)
+        {
+            bool isApproved = await postService.ApproveById(id);
+            if (!isApproved)
+            {
+                return NotFound();
+            }
+
+            return Redirect($"/Administration/Home/ApprovePosts/");
+        }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using TheForumOfEverything.Models.Posts;
 
-namespace TheForumOfEverything.Services.Posts
+namespace TheForumOfEverything.Areas.Administration.Services
 {
-    public interface IPostService
+    public interface IPostAdminService
     {
         Task<ICollection<PostViewModel>> GetAll();
         Task<ICollection<PostViewModel>> GetLastNPosts(int n);
@@ -10,6 +10,5 @@ namespace TheForumOfEverything.Services.Posts
         Task<PostViewModel> GetById(string id);
         Task<PostViewModel> Edit(PostViewModel model);
         Task<bool> DeleteById(string id);
-        Task<bool> ApproveById(string id);
     }
 }

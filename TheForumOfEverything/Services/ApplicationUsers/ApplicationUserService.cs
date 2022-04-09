@@ -46,7 +46,7 @@ namespace TheForumOfEverything.Services.ApplicationUsers
                 Bio = user.Bio,
             };
 
-            model.Posts = context.Posts.Where(p => p.UserId == user.Id).ToList();
+            model.Posts = context.Posts.Where(p => p.UserId == user.Id && p.IsApproved).ToList();
 
             return Task.FromResult(model);
         }

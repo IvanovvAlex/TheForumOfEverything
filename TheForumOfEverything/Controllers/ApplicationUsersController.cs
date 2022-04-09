@@ -21,10 +21,10 @@ namespace TheForumOfEverything.Controllers
             this.userManager = userManager;
             this.roleService = roleService;
         }
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
+        public IActionResult Index()
+        {
+            return View();
+        }
         [Authorize]
         public async Task<IActionResult> MyProfile()
         {

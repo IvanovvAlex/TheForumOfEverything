@@ -32,10 +32,14 @@
                                 <a href="#!">@Html.DisplayFor(model => model.User.UserName)</a>
                                 on @Model.TimeCreated
                             </span>
-                                    @if(User.FindFirstValue(ClaimTypes.NameIdentifier) == Model.UserId){
+                            @if(User.FindFirstValue(ClaimTypes.NameIdentifier) == Model.UserId){
                         <a id="login-submit" class="w-100 btn btn-lg btn-primary" asp-controller="Posts" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
-                    }
-
+                        <a id="login-submit" class="w-100 btn btn-lg btn-primary" asp-controller="Posts" asp-action="Delete" asp-route-id="@Model?.Id">Delete</a>
+                            }
+                    @if(User.IsInRole("Admin") && !Model.IsApproved){
+                        <a id="login-submit" class="w-100 btn btn-lg btn-primary" asp-controller="Posts" asp-action="Approve" asp-route-id="@Model?.Id">Approve</a>
+                        <a id="login-submit" class="w-100 btn btn-lg btn-primary" asp-controller="Posts" asp-action="Delete" asp-route-id="@Model?.Id">Delete</a>
+                            }
 
                         </div>
                     </div>
@@ -57,9 +61,8 @@
                 <h1>Comments</h1>
                 @foreach(var comment in Model.Comments)
                 {
-                    <div class="comment mt-4 text-justify float-left"> <img src="https://i.imgur.com/yTFUilP.jpg" alt="" class="rounded-circle" width="40" height="40">
-                    <h6>@await userManager.FindByIdAsync(comment.UserId); </h6> <span>- @comment.TimeCreated</span> <br>
-                    <p>@comment.Content</p>
+                    <div class = "col"> 
+                    <h6>@await userManager.FindByIdAsync(comment.UserId): @comment.Content </h6><br>
                 </div>
                 }
             </div>
@@ -70,8 +73,7 @@
                             <div class="form-group">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                 <div class="form-outline row justify-content-center">
-                                    <h4>Leave a comment</h4>
-                                    <textarea type="text" id="Content" name="Content" class="form-control" cols="30" rows="5" placeholder="What's new?"></textarea>
+                                    <textarea type="text" id="Content" name="Content" class="form-control" cols="30" rows="5" placeholder="Leave a comment"></textarea>
                                     <span class="text-danger"></span>
                                     <input type="hidden" id="PostId" name="PostId" value="@Model.Id" />
                                 </div>
