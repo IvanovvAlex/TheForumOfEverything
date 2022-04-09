@@ -12,8 +12,8 @@ using TheForumOfEverything.Data;
 namespace TheForumOfEverything.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220404211607_AddCategoryTable")]
-    partial class AddCategoryTable
+    [Migration("20220409111730_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
