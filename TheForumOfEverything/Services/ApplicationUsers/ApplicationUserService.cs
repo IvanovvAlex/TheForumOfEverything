@@ -65,9 +65,7 @@ namespace TheForumOfEverything.Services.ApplicationUsers
             user.Address = model.Address;
             user.Bio = model.Bio;
             user.Birthday = model.Birthday;
-            user.UserName = model.Username;
-            user.Email = model.Email;
-            await context.SaveChangesAsync();
+            context.SaveChanges();
 
             return model;
         }
