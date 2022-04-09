@@ -31,6 +31,8 @@
                                 <a href="#!">@Html.DisplayFor(model => model.User.UserName)</a>
                                 on @Model.TimeCreated
                             </span>
+                                    <a id="login-submit" class="w-100 btn btn-lg btn-primary" asp-controller="Posts" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+
                         </div>
                     </div>
                 </div>

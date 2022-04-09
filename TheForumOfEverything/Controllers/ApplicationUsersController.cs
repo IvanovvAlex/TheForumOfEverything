@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using TheForumOfEverything.Data.Models;
 using TheForumOfEverything.Models.Users;
 using TheForumOfEverything.Services.ApplicationUsers;
@@ -26,26 +27,32 @@ namespace TheForumOfEverything.Controllers
         {
             var user = await userManager.GetUserAsync(HttpContext.User);
 
-            UserViewModel model = await userService.GetUser(user);
+            UserViewModel model = await userService.GetUserViewModel(user);
 
             return View(model);
         }
 
         [Authorize]
-        public async Task<IActionResult> Edit()
+        public async Task<IActionResult> Edit(string id)
         {
-            return View();
+            UserViewModel model = await userService.GetUser(id);
+
+            return View(model);
         }
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Edit()
+        public async Task<IActionResult> Edit(UserViewModel model)
         {
-            var user = await userManager.GetUserAsync(HttpContext.User);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            UserViewModel model = await userService.GetUser(user);
+            UserViewModel editedUser = await userService.Edit(userId, model);
+            if (editedUser == null)
+            {
+                return NotFound();
+            }
 
-            return View(model);
+            return Redirect($"/ApplicationUsers/MyProfile/");
         }
     }
 }

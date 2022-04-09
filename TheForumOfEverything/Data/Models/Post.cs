@@ -8,7 +8,7 @@ namespace TheForumOfEverything.Data.Models
         public string Id { get; init; } = Guid.NewGuid().ToString();
 
         [Required]
-        public string CategoryId { get; init; }
+        public string CategoryId { get; set; }
 
         [Required]
         public Category Category { get; set; }

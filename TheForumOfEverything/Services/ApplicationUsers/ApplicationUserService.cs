@@ -1,4 +1,6 @@
-﻿using TheForumOfEverything.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+using TheForumOfEverything.Data;
 using TheForumOfEverything.Data.Models;
 using TheForumOfEverything.Models.Users;
 
@@ -11,7 +13,30 @@ namespace TheForumOfEverything.Services.ApplicationUsers
         {
             this.context = context;
         }
-        public Task<UserViewModel> GetUser(ApplicationUser user)
+
+        public async Task<UserViewModel> GetUser(string id)
+        {
+            ApplicationUser user = await context.ApplicationUser.FirstOrDefaultAsync(x => x.Id == id);
+            if (user == null)
+            {
+                return null;
+            }
+
+            UserViewModel model = new UserViewModel()
+            {
+                Name = user.Name,
+                Surname = user.Surname,
+                Address = user.Address,
+                Bio = user.Bio,
+                Birthday = user.Birthday,
+                Username = user.UserName,
+                Email = user.Email,
+            };
+
+            return model;
+        }
+
+        public Task<UserViewModel> GetUserViewModel(ApplicationUser user)
         {
             UserViewModel model = new UserViewModel()
             {
@@ -24,6 +49,27 @@ namespace TheForumOfEverything.Services.ApplicationUsers
             model.Posts = context.Posts.Where(p => p.UserId == user.Id).ToList();
 
             return Task.FromResult(model);
+        }
+
+        public async Task<UserViewModel> Edit(string userId, UserViewModel model)
+        {
+            ApplicationUser user = await context.ApplicationUser
+                .FirstOrDefaultAsync(x => x.Id == userId);
+            if (user == null)
+            {
+                return null;
+            }
+
+            user.Name = model.Name;
+            user.Surname = model.Surname;
+            user.Address = model.Address;
+            user.Bio = model.Bio;
+            user.Birthday = model.Birthday;
+            user.UserName = model.Username;
+            user.Email = model.Email;
+            await context.SaveChangesAsync();
+
+            return model;
         }
     }
 }

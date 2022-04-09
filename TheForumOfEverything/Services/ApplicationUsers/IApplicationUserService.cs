@@ -5,6 +5,8 @@ namespace TheForumOfEverything.Services.ApplicationUsers
 {
     public interface IApplicationUserService
     {
-        Task<UserViewModel> GetUser(ApplicationUser user);
+        Task<UserViewModel> GetUserViewModel(ApplicationUser user);
+        Task<UserViewModel> Edit(string userId, UserViewModel user);
+        Task<UserViewModel> GetUser( string id );
     }
 }

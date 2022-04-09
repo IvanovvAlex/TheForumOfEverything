@@ -74,6 +74,8 @@ namespace TheForumOfEverything.Controllers
         [Authorize]
         public async Task<IActionResult> Edit(string id)
         {
+            ViewData["CategoryId"] = new SelectList(context.Categories, "Id", "Title");
+
             PostViewModel model = await postService.GetById(id);
             if (model == null)
             {
@@ -94,7 +96,7 @@ namespace TheForumOfEverything.Controllers
             }
             string id = model.Id;
 
-            return Redirect($"/Tags/Details/{id}");
+            return Redirect($"/Posts/Details/{id}");
         }
 
         [Authorize]

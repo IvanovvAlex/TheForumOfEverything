@@ -127,8 +127,12 @@ namespace TheForumOfEverything.Services.Posts
                 return null;
             }
 
+            post.CategoryId = model.CategoryId;
+            post.Category = model.Category;
+            post.Title = model.Title;
+            post.Description = model.Description;
             post.Content = model.Content;
-            context.SaveChangesAsync();
+            await context.SaveChangesAsync();
 
             return model;
         }
