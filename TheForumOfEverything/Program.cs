@@ -7,6 +7,7 @@ using TheForumOfEverything.Services.ApplicationUsers;
 using TheForumOfEverything.Data.Models;
 using TheForumOfEverything.Services.Comments;
 using TheForumOfEverything.Services.Categories;
+using TheForumOfEverything.Services.Roles;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequiredLength = 4;
 })
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>(); 
 builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<IApplicationUserService, ApplicationUserService>();
@@ -32,6 +34,7 @@ builder.Services.AddTransient<IPostService, PostService>();
 builder.Services.AddTransient<ICategoryService, CategoryService>();
 builder.Services.AddTransient<ICommentService, CommentService>();
 builder.Services.AddTransient<ITagService, TagService>();
+builder.Services.AddTransient<IRoleService, RoleService>();
 
 var app = builder.Build();
 

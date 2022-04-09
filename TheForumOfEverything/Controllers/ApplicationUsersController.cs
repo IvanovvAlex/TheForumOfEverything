@@ -5,6 +5,7 @@ using System.Security.Claims;
 using TheForumOfEverything.Data.Models;
 using TheForumOfEverything.Models.Users;
 using TheForumOfEverything.Services.ApplicationUsers;
+using TheForumOfEverything.Services.Roles;
 
 namespace TheForumOfEverything.Controllers
 {
@@ -12,11 +13,13 @@ namespace TheForumOfEverything.Controllers
     {
         private readonly IApplicationUserService userService;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IRoleService roleService;
 
-        public ApplicationUsersController(IApplicationUserService userService, UserManager<ApplicationUser> userManager)
+        public ApplicationUsersController(IApplicationUserService userService, UserManager<ApplicationUser> userManager, IRoleService roleService)
         {
             this.userService = userService;
             this.userManager = userManager;
+            this.roleService = roleService;
         }
         //public IActionResult Index()
         //{
@@ -26,7 +29,6 @@ namespace TheForumOfEverything.Controllers
         public async Task<IActionResult> MyProfile()
         {
             var user = await userManager.GetUserAsync(HttpContext.User);
-
             UserViewModel model = await userService.GetUserViewModel(user);
 
             return View(model);

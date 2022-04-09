@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
+using TheForumOfEverything.Data.Models;
 using TheForumOfEverything.Models;
 using TheForumOfEverything.Models.Categories;
 using TheForumOfEverything.Models.Posts;
@@ -15,12 +17,14 @@ namespace TheForumOfEverything.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IPostService postService;
         private readonly ICategoryService categoryService;
+        private RoleManager<IdentityRole> roleManager;
 
-        public HomeController(ILogger<HomeController> logger, IPostService postService, ICategoryService categoryService)
+        public HomeController(ILogger<HomeController> logger,RoleManager<IdentityRole> roleManager, IPostService postService, ICategoryService categoryService)
         {
             _logger = logger;
             this.postService = postService;
             this.categoryService = categoryService;
+            this.roleManager = roleManager;
         }
 
         public async Task<IActionResult> Index()
