@@ -28,6 +28,7 @@ namespace TheForumOfEverything.Services.Posts
                     TimeCreated = x.TimeCreated,
                     User = x.User,
                 })
+                .OrderByDescending(x => x.TimeCreated)
                 .ToListAsync();
 
             return posts;
@@ -69,7 +70,7 @@ namespace TheForumOfEverything.Services.Posts
                 UserId = userId
             };
             await context.Posts.AddAsync(newPost);
-            context.SaveChangesAsync();
+            await context.SaveChangesAsync();
 
             //string webRootPath = webHostEnvironment.WebRootPath;
             //string pathToImage = $@"{webRootPath}\UserFiles\Posts\{newPost.Id}\HeaderImage.jpg";
@@ -109,7 +110,7 @@ namespace TheForumOfEverything.Services.Posts
                 UserId = post.UserId,
                 Category = post.Category,
                 CategoryId = post.CategoryId,
-                Comments = post.Comments,
+                Comments = post.Comments.OrderByDescending(x => x.TimeCreated).ToList(),
                 ImgUrl = "/assets/img/it-category.jpg"
             };
 

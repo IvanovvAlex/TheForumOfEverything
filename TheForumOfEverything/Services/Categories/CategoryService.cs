@@ -74,7 +74,7 @@ namespace TheForumOfEverything.Services.Categories
             {
                 Id = category.Id,
                 Title = category.Title,
-                Posts = category.Posts
+                Posts = category.Posts.OrderByDescending(x => x.TimeCreated).ToList()
             };
 
             return model;

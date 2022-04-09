@@ -11,16 +11,15 @@
             <div class="container position-relative px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7">
-                        <div class="post-heading"style="margin:auto">
+                        <div class="post-heading">
                             <img src="https://pbs.twimg.com/media/E1G0DBcXIAATg_C.jpg" class="rounded-circle" width="300" height="300" id="myProfilePicture">
                             <h3 class="post-title" id="myProfileName">@Model.Name @Model.Surname</h3>                    
                             <h6 class="subheading" id="myProfileBio">@Model.Bio</h6>   
                                     <a id="login-submit" class="w-10 btn btn-lg btn-primary" href="/ApplicationUsers/Edit/@User.FindFirstValue(ClaimTypes.NameIdentifier)">Edit</a>
-
                         </div>
                     </div>
                 </div>
-            </div>
+                </div>
         </header>
         <!-- Post Content-->
          <div class="col-lg-8 col-md-10 mx-auto testing">

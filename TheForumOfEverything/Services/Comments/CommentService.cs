@@ -48,7 +48,7 @@ namespace TheForumOfEverything.Services.Comments
                 User = user,
             };
             await context.Comments.AddAsync(newComment);
-            context.SaveChangesAsync();
+            await context.SaveChangesAsync();
 
 
             string newCommentId = newComment.Id;
