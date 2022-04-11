@@ -59,6 +59,10 @@ namespace TheForumOfEverything.Services.ApplicationUsers
             {
                 return null;
             }
+            if (model == null)
+            {
+                return null;
+            }
 
             user.Name = model.Name;
             user.Surname = model.Surname;

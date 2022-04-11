@@ -6,7 +6,7 @@ namespace TheForumOfEverything.Services.Categories
     {
         Task<ICollection<CategoryViewModel>> GetAll();
         Task<ICollection<CategoryViewModel>> GetLastNCategories(int n);
-        Task<CategoryViewModel> Create(CreateCategoryViewModel model, string userId);
+        Task<CategoryViewModel> Create(CreateCategoryViewModel model);
         Task<CategoryViewModel> GetById(string id);
         Task<CategoryViewModel> Edit(CategoryViewModel model);
         Task<bool> DeleteById(string id);

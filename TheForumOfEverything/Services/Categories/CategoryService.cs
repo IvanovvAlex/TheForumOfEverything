@@ -26,18 +26,22 @@ namespace TheForumOfEverything.Services.Categories
         }
         public async Task<ICollection<CategoryViewModel>> GetLastNCategories(int n)
         {
-            ICollection<CategoryViewModel> categories = context.Categories
+            ICollection<CategoryViewModel> categories = await context.Categories
                 .Skip(Math.Max(0, context.Categories.Count() - n))
                 .Select(x => new CategoryViewModel()
                 {
                     Id = x.Id,
                     Title = x.Title,
                 })
-                .ToHashSet();
+                .ToListAsync();
             return categories;
         }
-        public async Task<CategoryViewModel> Create(CreateCategoryViewModel model, string userId)
+        public async Task<CategoryViewModel> Create(CreateCategoryViewModel model)
         {
+            if (model == null)
+            {
+                return null;
+            }
             string modelTitle = model.Title;
 
             bool isCategoryExist = await context.Categories.AnyAsync(x => x.Title == modelTitle);
@@ -64,6 +68,10 @@ namespace TheForumOfEverything.Services.Categories
 
         public async Task<CategoryViewModel> GetById(string id)
         {
+            if (id == null)
+            {
+                return null;
+            }
             Category category = await context.Categories.Include(p => p.Posts.Where(x =>x.IsApproved)).FirstOrDefaultAsync(x => x.Id == id);
             if (category == null)
             {
@@ -82,6 +90,11 @@ namespace TheForumOfEverything.Services.Categories
 
         public async Task<CategoryViewModel> Edit(CategoryViewModel model)
         {
+            if (model == null)
+            {
+                return null;
+            }
+
             string modelId = model.Id;
 
             Category category = await context.Categories
@@ -99,6 +112,10 @@ namespace TheForumOfEverything.Services.Categories
 
         public async Task<bool> DeleteById(string id)
         {
+            if (id == null)
+            {
+                return false;
+            }
             Category category = await context.Categories.FirstOrDefaultAsync(x => x.Id == id);
             if (category == null)
             {

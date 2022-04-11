@@ -43,7 +43,7 @@ namespace TheForumOfEverything.Controllers
             }
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            CategoryViewModel newCategoryModel = await categoryService.Create(model, userId);
+            CategoryViewModel newCategoryModel = await categoryService.Create(model);
 
             if (newCategoryModel != null)
             {
