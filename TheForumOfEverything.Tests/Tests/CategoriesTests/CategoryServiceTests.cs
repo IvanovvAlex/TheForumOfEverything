@@ -84,7 +84,12 @@ namespace TheForumOfEverything.Tests.Tests.CategoriesTests
 
             var invalidIdResult = categoryService.GetById("invalid id");
 
+            var resultPosts = result.Result.Posts.ToArray();
+            var expectedPosts = context.Categories.FirstOrDefault(x => x.Id == categoryId).Posts
+                                                                                          .OrderByDescending(x => x.TimeCreated)
+                                                                                          .ToArray();
 
+            Assert.IsTrue(expectedPosts.SequenceEqual(resultPosts));
             Assert.IsNotNull(result.Result);
             Assert.IsNull(nullIdResult.Result);
             Assert.IsNull(invalidIdResult.Result);
