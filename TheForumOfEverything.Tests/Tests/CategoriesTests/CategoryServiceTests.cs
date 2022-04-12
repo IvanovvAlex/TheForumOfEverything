@@ -22,6 +22,7 @@ namespace TheForumOfEverything.Tests.Tests.CategoriesTests
 
         private ApplicationDbContext context;
         private CategoryService categoryService;
+        private string deleteCategoryId = "c096270b-0bb3-45e0-bce3-fac5c3837eba";
         private string categoryId = "4564823c-c289-4f24-940f-a9a24957e29a";
 
         [OneTimeSetUp]
@@ -127,19 +128,13 @@ namespace TheForumOfEverything.Tests.Tests.CategoriesTests
         [Test]
         public void DeleteCategoryByIdTest()
         {
-            var categoryBeforeDelete = context.Categories.FirstOrDefault(x => x.Id == categoryId);
-
-
-            var result = categoryService.DeleteById(categoryId);
+            var result = categoryService.DeleteById(deleteCategoryId);
 
             var nullResult = categoryService.DeleteById(null);
 
             var invalidIdResult = categoryService.DeleteById("Invalid id");
 
-            var category = context.Categories.FirstOrDefault(x => x.Id == categoryId);
-
-            context.Categories.Add(categoryBeforeDelete);
-            context.SaveChanges();
+            var category = context.Categories.FirstOrDefault(x => x.Id == deleteCategoryId);
 
             Assert.IsNull(category);
             Assert.IsTrue(result.Result);

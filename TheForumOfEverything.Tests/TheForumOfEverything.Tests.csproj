@@ -21,10 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Tests\CommentsTests\" />
     <Folder Include="Tests\HomeTests\" />
     <Folder Include="Tests\TagsTests\" />
-    <Folder Include="Tests\PostsTests\" />
   </ItemGroup>
 
 </Project>

@@ -11,6 +11,10 @@ namespace TheForumOfEverything.Services.Posts
     {
         private readonly ApplicationDbContext context;
         private readonly IWebHostEnvironment webHostEnvironment;
+        public PostService(ApplicationDbContext context)
+        {
+            this.context = context;
+        }
         public PostService(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             this.context = context;
@@ -54,6 +58,10 @@ namespace TheForumOfEverything.Services.Posts
         }
         public async Task<PostViewModel> Create(CreatePostViewModel model, string userId)
         {
+            if(model == null || userId == null)
+            {
+                return null;
+            }
             string modelTitle = model.Title;
             string modelShortDescription = model.Description;
             string modelContent = model.Content;
@@ -96,6 +104,10 @@ namespace TheForumOfEverything.Services.Posts
 
         public async Task<PostViewModel> GetById(string id)
         {
+            if (id == null)
+            {
+                return null;
+            }
             Post post = await context.Posts.Include(u => u.User).Include(c => c.Category).Include(c => c.Comments).FirstOrDefaultAsync(x => x.Id == id);
             if (post == null)
             {
@@ -123,6 +135,10 @@ namespace TheForumOfEverything.Services.Posts
 
         public async Task<PostViewModel> Edit(PostViewModel model)
         {
+            if(model == null)
+            {
+                return null;
+            }
             string modelId = model.Id;
 
             Post post = await context.Posts
@@ -144,6 +160,10 @@ namespace TheForumOfEverything.Services.Posts
 
         public async Task<bool> DeleteById(string id)
         {
+            if (id == null)
+            {
+                return false;
+            }
             Post post = await context.Posts.FirstOrDefaultAsync(x => x.Id == id);
             if (post == null)
             {
