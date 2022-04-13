@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Ganss.XSS;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Security.Application;
 using System.Security.Claims;
 using TheForumOfEverything.Data;
 using TheForumOfEverything.Data.Models;
@@ -24,7 +26,7 @@ namespace TheForumOfEverything.Services.Posts
         {
             ICollection<PostViewModel> posts = await context.Posts
                 .Include(x => x.User)
-                .Where(x => x.IsApproved)
+                .Where(x => x.IsApproved && !x.IsDeleted)
                 .Select(x => new PostViewModel()
                 {
                     Id = x.Id,
@@ -44,7 +46,7 @@ namespace TheForumOfEverything.Services.Posts
         {
             ICollection<Post> posts = await context.Posts
                 .Include(x => x.User)
-                .Where(x => x.IsApproved && x.CategoryId == categoryId)
+                .Where(x => x.IsApproved && !x.IsDeleted && x.CategoryId == categoryId)
                 .OrderByDescending(x => x.TimeCreated)
                 .ToListAsync();
 
@@ -53,7 +55,7 @@ namespace TheForumOfEverything.Services.Posts
         public async Task<ICollection<PostViewModel>> GetLastNPosts(int n)
         {
             ICollection<PostViewModel> posts = await context.Posts
-                .Where(x => x.IsApproved)
+                .Where(x => x.IsApproved && !x.IsDeleted)
                 .OrderByDescending(x => x.TimeCreated)
                 .Select(x => new PostViewModel()
                 {
@@ -74,6 +76,7 @@ namespace TheForumOfEverything.Services.Posts
             {
                 return null;
             }
+
             string modelTitle = model.Title;
             string modelShortDescription = model.Description;
             string modelContent = model.Content;
@@ -126,12 +129,16 @@ namespace TheForumOfEverything.Services.Posts
                 return null;
             }
 
+            var sanitizer = new HtmlSanitizer();
+
+            var sanitized = sanitizer.Sanitize(post.Content, "http://www.example.com");
+
             PostViewModel model = new PostViewModel()
             {
                 Id = post.Id,
                 Title = post.Title,
                 Description = post.Description,
-                Content = post.Content,
+                Content = sanitized,
                 TimeCreated = post.TimeCreated,
                 User = post.User,
                 UserId = post.UserId,
@@ -181,7 +188,7 @@ namespace TheForumOfEverything.Services.Posts
             {
                 return false;
             }
-            context.Posts.Remove(post);
+            post.IsDeleted = true;
             await context.SaveChangesAsync();
             return true;
         }

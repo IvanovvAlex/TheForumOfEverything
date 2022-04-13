@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Security.Application;
 using System.Security.Claims;
 using TheForumOfEverything.Data;
 using TheForumOfEverything.Data.Models;

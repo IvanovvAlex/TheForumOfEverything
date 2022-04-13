@@ -41,7 +41,7 @@ namespace TheForumOfEverything.Tests.Tests.PostsTests
         [Test]
         public void GetAllPostsTest()
         {
-            var expectedCount = context.Posts.Where(x => x.IsApproved).Count();
+            var expectedCount = context.Posts.Where(x => x.IsApproved && !x.IsDeleted).Count();
 
             var result = postService.GetAll();
 

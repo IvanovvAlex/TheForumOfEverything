@@ -43,6 +43,7 @@ namespace TheForumOfEverything.Controllers
         public async Task<IActionResult> MyProfile()
         {
             var user = await userManager.GetUserAsync(HttpContext.User);
+            
             UserViewModel model = await userService.GetUserViewModel(user);
 
             return View(model);
