@@ -19,7 +19,7 @@ namespace TheForumOfEverything.Areas.Administration.Services
         public async Task<ICollection<PostViewModel>> GetAll()
         {
             ICollection<PostViewModel> posts = await context.Posts
-                .Where(x => !x.IsApproved)
+                .Where(x => !x.IsApproved && !x.IsDeleted)
                 .Select(x => new PostViewModel()
                 {
                     Id = x.Id,

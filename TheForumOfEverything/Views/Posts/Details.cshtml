@@ -80,7 +80,7 @@
                 @foreach (var comment in Model.Comments)
                 {
                     <div class="col">
-                        <h6 style="font-weight:normal;">@await userManager.FindByIdAsync(comment.UserId): <b>@comment.Content</b> </h6><br>
+                        <h6 style="font-weight:normal;"><b>@await userManager.FindByIdAsync(comment.UserId): </b>@comment.Content </h6><br>
                     </div>
                 }
             </div>
