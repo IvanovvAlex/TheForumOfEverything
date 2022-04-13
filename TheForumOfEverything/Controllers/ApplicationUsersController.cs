@@ -9,6 +9,7 @@ using TheForumOfEverything.Services.Roles;
 
 namespace TheForumOfEverything.Controllers
 {
+    [Authorize]
     public class ApplicationUsersController : Controller
     {
         private readonly IApplicationUserService userService;
@@ -21,11 +22,24 @@ namespace TheForumOfEverything.Controllers
             this.userManager = userManager;
             this.roleService = roleService;
         }
-        public IActionResult Index()
+
+        public async Task<IActionResult> Details(string id)
         {
-            return View();
+            var user = await userManager.FindByIdAsync(id);
+
+            var model = await userService.GetUserViewModel(user);
+            return View(model);
         }
-        [Authorize]
+
+        [Area("Administration")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> MakeAdmin(string id)
+        {
+            var user = await userManager.FindByIdAsync(id);
+            await roleService.AddUserToRole(user, "Admin");
+            return Redirect("/Administration/Home/AddAdmins/");
+        }
+
         public async Task<IActionResult> MyProfile()
         {
             var user = await userManager.GetUserAsync(HttpContext.User);
@@ -34,7 +48,6 @@ namespace TheForumOfEverything.Controllers
             return View(model);
         }
 
-        [Authorize]
         public async Task<IActionResult> Edit(string id)
         {
             UserViewModel model = await userService.GetUser(id);
@@ -43,7 +56,6 @@ namespace TheForumOfEverything.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> Edit(UserViewModel model)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

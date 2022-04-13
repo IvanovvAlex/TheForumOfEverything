@@ -226,6 +226,18 @@ namespace TheForumOfEverything.Tests.Data
                    CategoryId = "4564823c-c289-4f24-940f-a9a24957e29a"
 
                 },
+                new Post
+                {
+                   Id = "e12d9700-3441-40ad-8ecb-ff3bd3d058b6",
+                   Title = "Post 6",
+                   Description = "Post Description 6",
+                   Content = "Test Post 6",
+                   UserId = "fee859e9-7b26-4cf8-a3c5-7cea60c13101",
+                   IsApproved = true,
+                   TimeCreated = DateTime.Now.ToString(),
+                   CategoryId = "4564823c-c289-4f24-940f-a9a24957e29a"
+
+                },
             };
 
             return posts;
@@ -243,7 +255,7 @@ namespace TheForumOfEverything.Tests.Data
 
         public static void Seed(ApplicationDbContext context)
         {
-            context.Users.Add(User());
+            //context.Users.Add(User());
 
             var users = Users();
             var categories = Categories();

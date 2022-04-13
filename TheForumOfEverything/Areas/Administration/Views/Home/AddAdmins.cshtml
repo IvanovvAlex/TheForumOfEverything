@@ -1,5 +1,19 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model IEnumerable<TheForumOfEverything.Models.Users.UserViewModel>
+
+<br>
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+              @foreach (var item in Model){
+                <!-- Post preview-->
+                <div class="post-preview">
+                    <a asp-area="" asp-controller="ApplicationUsers" asp-action="Details" asp-route-id="@item.Id">
+                            <h4 class="post-title">@item.Username</h4>                            
+                    </a>
+                </div>
+                <!-- Divider-->
+                <hr class="my-4" />
+               }
+            </div>
+        </div>
+    </div>

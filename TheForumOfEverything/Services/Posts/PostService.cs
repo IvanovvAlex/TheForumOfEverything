@@ -23,6 +23,7 @@ namespace TheForumOfEverything.Services.Posts
         public async Task<ICollection<PostViewModel>> GetAll()
         {
             ICollection<PostViewModel> posts = await context.Posts
+                .Include(x => x.User)
                 .Where(x => x.IsApproved)
                 .Select(x => new PostViewModel()
                 {
@@ -38,12 +39,22 @@ namespace TheForumOfEverything.Services.Posts
 
             return posts;
         }
+
+        public async Task<ICollection<Post>> GetAllFromCategory(string categoryId)
+        {
+            ICollection<Post> posts = await context.Posts
+                .Include(x => x.User)
+                .Where(x => x.IsApproved && x.CategoryId == categoryId)
+                .OrderByDescending(x => x.TimeCreated)
+                .ToListAsync();
+
+            return posts;
+        }
         public async Task<ICollection<PostViewModel>> GetLastNPosts(int n)
         {
             ICollection<PostViewModel> posts = await context.Posts
                 .Where(x => x.IsApproved)
                 .OrderByDescending(x => x.TimeCreated)
-                .Skip(Math.Max(0, context.Posts.Count() - n))
                 .Select(x => new PostViewModel()
                 {
                     Id = x.Id,
@@ -53,6 +64,7 @@ namespace TheForumOfEverything.Services.Posts
                     TimeCreated = x.TimeCreated,
                     User = x.User,
                 })
+                .Take(n)
                 .ToListAsync();
             return posts;
         }
@@ -175,6 +187,10 @@ namespace TheForumOfEverything.Services.Posts
         }
         public async Task<bool> ApproveById(string id)
         {
+            if (id == null)
+            {
+                return false;
+            }
             Post post = await context.Posts.FirstOrDefaultAsync(x => x.Id == id);
             if (post == null)
             {
@@ -184,13 +200,15 @@ namespace TheForumOfEverything.Services.Posts
             await context.SaveChangesAsync();
             return true;
         }
-        private void EnsureFolder(string path)
-        {
-            string directoryName = Path.GetDirectoryName(path);
-            if (directoryName.Length > 0)
-            {
-                Directory.CreateDirectory(Path.GetDirectoryName(path));
-            }
-        }
+
+       
+        //private void EnsureFolder(string path)
+        //{
+        //    string directoryName = Path.GetDirectoryName(path);
+        //    if (directoryName.Length > 0)
+        //    {
+        //        Directory.CreateDirectory(Path.GetDirectoryName(path));
+        //    }
+        //}
     }
 }

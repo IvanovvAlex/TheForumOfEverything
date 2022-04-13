@@ -2,15 +2,18 @@
 using TheForumOfEverything.Data;
 using TheForumOfEverything.Data.Models;
 using TheForumOfEverything.Models.Categories;
+using TheForumOfEverything.Services.Posts;
 
 namespace TheForumOfEverything.Services.Categories
 {
     public class CategoryService : ICategoryService
     {
         private readonly ApplicationDbContext context;
-        public CategoryService(ApplicationDbContext context)
+        private readonly IPostService postService;
+        public CategoryService(ApplicationDbContext context, IPostService postService)
         {
             this.context = context;
+            this.postService = postService;
         }
         public async Task<ICollection<CategoryViewModel>> GetAll()
         {
@@ -72,17 +75,19 @@ namespace TheForumOfEverything.Services.Categories
             {
                 return null;
             }
-            Category category = await context.Categories.Include(p => p.Posts.Where(x =>x.IsApproved)).FirstOrDefaultAsync(x => x.Id == id);
+            Category category = await context.Categories.FirstOrDefaultAsync(x => x.Id == id);
             if (category == null)
             {
                 return null;
             }
 
+            var posts = await postService.GetAllFromCategory(id);
+
             CategoryViewModel model = new CategoryViewModel()
             {
                 Id = category.Id,
                 Title = category.Title,
-                Posts = category.Posts.OrderByDescending(x => x.TimeCreated).ToList()
+                Posts = (ICollection<Post>)posts
             };
 
             return model;

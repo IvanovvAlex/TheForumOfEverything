@@ -14,9 +14,26 @@ namespace TheForumOfEverything.Services.ApplicationUsers
             this.context = context;
         }
 
+        public async Task<ICollection<UserViewModel>> GetUsers()
+        {
+            ICollection<UserViewModel> users = await context.ApplicationUser
+                .Select(x => new UserViewModel()
+                {
+                    Id = x.Id,
+                    Username = x.UserName,
+                })
+                .ToListAsync();
+
+            return users;
+        }
+
         public async Task<UserViewModel> GetUser(string id)
         {
-            ApplicationUser user = await context.ApplicationUser.FirstOrDefaultAsync(x => x.Id == id);
+            if (id == null)
+            {
+                return null;
+            }
+            ApplicationUser user = await context.ApplicationUser.Include(x => x.Posts).FirstOrDefaultAsync(x => x.Id == id);
             if (user == null)
             {
                 return null;
@@ -24,6 +41,7 @@ namespace TheForumOfEverything.Services.ApplicationUsers
 
             UserViewModel model = new UserViewModel()
             {
+                Id = user.Id,
                 Name = user.Name,
                 Surname = user.Surname,
                 Address = user.Address,
@@ -38,8 +56,13 @@ namespace TheForumOfEverything.Services.ApplicationUsers
 
         public Task<UserViewModel> GetUserViewModel(ApplicationUser user)
         {
+            if (user == null)
+            {
+                return null;
+            }
             UserViewModel model = new UserViewModel()
             {
+                Id = user.Id,
                 Name = user.Name,
                 Surname = user.Surname,
                 Address = user.Address,

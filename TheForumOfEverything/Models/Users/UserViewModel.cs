@@ -4,6 +4,7 @@ namespace TheForumOfEverything.Models.Users
 {
     public class UserViewModel
     {
+        public string Id { get; init; }
         public string? Username { get; set; }
         public string? Email { get; set; }
         public string? Name { get; set; }

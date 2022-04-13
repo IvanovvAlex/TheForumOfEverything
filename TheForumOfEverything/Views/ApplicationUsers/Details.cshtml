@@ -1,0 +1,55 @@
+﻿@using System.Security.Claims
+@model TheForumOfEverything.Models.Users.UserViewModel
+
+@{
+    ViewData["Title"] = "Details";
+    ViewData["Header Page"] = "all-categories.jpg";
+}
+
+<!-- Page Header-->
+<header class="masthead" style="background-image:url('/assets/img/@ViewData["Header Page"]')">
+
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="post-heading">
+                    <img src="https://pbs.twimg.com/media/E1G0DBcXIAATg_C.jpg" class="rounded-circle" width="300" height="300" id="myProfilePicture">
+                    <h3 class="post-title" id="myProfileName">@Model.Name @Model.Surname</h3>
+                    <h6 class="subheading" id="myProfileBio">@Model.Bio</h6>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a id="login-submit" class="w-10 btn btn-lg btn-primary" asp-area="Administration" asp-controller="ApplicationUsers" asp-action="MakeAdmin" asp-route-id="@Model.Id">Make Admin</a>
+
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- Post Content-->
+<div class="col-lg-8 col-md-10 mx-auto testing">
+    @foreach (var item in Model.Posts.OrderByDescending(x => x.TimeCreated).ToList())
+    {
+        <!-- Post preview-->
+        <div class="post-preview">
+            <a asp-controller="Posts" asp-action="Details" asp-route-id="@item.Id">
+                @if (item.Title.Length >= 30)
+                {
+                    <h4 class="post-title">@item.Title.Substring(0, 30)...</h4>
+                }
+                else
+                {
+                    <h4 class="post-title">@item.Title</h4>
+                }
+                <h6 class="post-subtitle">@item.Description</h6>
+            </a>
+            <p class="post-meta">
+                Posted by
+                <a href="#!">@item.User.UserName</a>
+                on @item.TimeCreated
+            </p>
+        </div>
+        <!-- Divider-->
+        <hr class="my-4" />
+    }
+</div>

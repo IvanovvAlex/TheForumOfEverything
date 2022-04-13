@@ -24,6 +24,7 @@ namespace TheForumOfEverything.Tests.Tests.PostsTests
         private PostService postService;
         private string postId = "98d09cfe-ecd6-48ed-b9e7-3607f26a6a6c";
         private string deletePostId = "31735522-39f9-4286-af7c-81b02aefd547";
+        private string editPostId = "f701c052-f786-4afb-9798-a1854c5e7437";
         private string categoryId = "57925fc4-4b92-4617-9470-ffa86d1e9695";
 
         [OneTimeSetUp]
@@ -40,7 +41,7 @@ namespace TheForumOfEverything.Tests.Tests.PostsTests
         [Test]
         public void GetAllPostsTest()
         {
-            var expectedCount = context.Posts.Count()-1;
+            var expectedCount = context.Posts.Where(x => x.IsApproved).Count();
 
             var result = postService.GetAll();
 
@@ -54,7 +55,7 @@ namespace TheForumOfEverything.Tests.Tests.PostsTests
 
             var result = postService.GetLastNPosts(N);
 
-            Assert.AreEqual(N - 1, result.Result.Count);
+            Assert.AreEqual(N, result.Result.Count()); 
         }
 
         [Test]
@@ -100,7 +101,7 @@ namespace TheForumOfEverything.Tests.Tests.PostsTests
 
             PostViewModel model = new PostViewModel()
             {
-                Id = postId,
+                Id = editPostId,
                 Content = expectedTitle,
             };
 
