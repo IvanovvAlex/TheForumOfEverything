@@ -208,7 +208,27 @@ namespace TheForumOfEverything.Services.Posts
             return true;
         }
 
-       
+        public async Task<ICollection<PostViewModel>> Search(string searchString)
+        {
+            ICollection<PostViewModel> posts = await context.Posts
+                            .Include(x => x.User)
+                            .Where(x => x.IsApproved && !x.IsDeleted && x.Title.Contains(searchString))
+                            .Select(x => new PostViewModel()
+                            {
+                                Id = x.Id,
+                                Title = x.Title,
+                                Description = x.Description,
+                                Content = x.Content,
+                                TimeCreated = x.TimeCreated,
+                                User = x.User,
+                            })
+                            .OrderByDescending(x => x.TimeCreated)
+                            .ToListAsync();
+
+            return posts;
+        }
+
+
         //private void EnsureFolder(string path)
         //{
         //    string directoryName = Path.GetDirectoryName(path);

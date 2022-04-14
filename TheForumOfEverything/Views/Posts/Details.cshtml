@@ -63,15 +63,15 @@
                         <div class="form-group">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <div class="form-outline row justify-content-center">
-                                <input type="text" id="Content" name="Content" class="form-control" cols="100" rows="1" placeholder="Leave a comment"></input>
+                                <input type="text" id="Content" name="Content" class="form-control" cols="100" rows="1" placeholder="Leave a comment" />
                                 <span class="text-danger"></span>
                                 <input type="hidden" id="PostId" name="PostId" value="@Model.Id" />
                             </div>
                         </div>
-                       
+
                     </form>
                 </div>
-                 
+
             </div>
         </div>
         <div class="row">
@@ -96,4 +96,4 @@
         document.querySelector('#algin-form').submit();
       }
     });
-  </script>
+</script>

@@ -22,6 +22,7 @@ namespace TheForumOfEverything.Services.ApplicationUsers
                     Id = x.Id,
                     Username = x.UserName,
                 })
+                .OrderByDescending(x => x.Username)
                 .ToListAsync();
 
             return users;
@@ -69,7 +70,7 @@ namespace TheForumOfEverything.Services.ApplicationUsers
                 Bio = user.Bio,
             };
 
-            model.Posts = context.Posts.Where(p => p.UserId == user.Id && p.IsApproved).ToList();
+            model.Posts = context.Posts.Where(p => p.UserId == user.Id && p.IsApproved && !p.IsDeleted).ToList();
 
             return Task.FromResult(model);
         }
@@ -95,6 +96,21 @@ namespace TheForumOfEverything.Services.ApplicationUsers
             context.SaveChanges();
 
             return model;
+        }
+        public async Task<ICollection<UserViewModel>> Search(string searchString)
+        {
+            ICollection<UserViewModel> users = await context.ApplicationUser
+                            .Where(x => x.Email.Contains(searchString))
+                            .Select(x => new UserViewModel()
+                            {
+                                Id = x.Id,
+                                Username = x.UserName,
+
+                            })
+                            .OrderBy(x => x.Username)
+                            .ToListAsync();
+
+            return users;
         }
     }
 }

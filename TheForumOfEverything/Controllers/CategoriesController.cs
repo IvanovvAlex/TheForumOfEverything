@@ -20,7 +20,6 @@ namespace TheForumOfEverything.Controllers
             this.userManager = userManager;
         }
 
-        [Authorize]
         public async Task<IActionResult> Index()
         {
             ICollection<CategoryViewModel> categories = await categoryService.GetAll();
@@ -52,7 +51,6 @@ namespace TheForumOfEverything.Controllers
             return View(model);
         }
 
-        [Authorize]
         public async Task<IActionResult> Details(string id)
         {
             CategoryViewModel model = await categoryService.GetById(id);

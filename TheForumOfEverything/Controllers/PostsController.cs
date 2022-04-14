@@ -8,6 +8,7 @@ using TheForumOfEverything.Data;
 using TheForumOfEverything.Data.Models;
 using TheForumOfEverything.Models.Comments;
 using TheForumOfEverything.Models.Posts;
+using TheForumOfEverything.Models.Shared;
 using TheForumOfEverything.Services.Comments;
 using TheForumOfEverything.Services.Posts;
 
@@ -122,6 +123,23 @@ namespace TheForumOfEverything.Controllers
             }
 
             return Redirect($"/Administration/Home/ApprovePosts/");
+        }
+
+        public async Task<IActionResult> Search()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Search(string searchString)
+        {
+            if (searchString == null)
+            {
+                return View();
+            }
+            var model = await postService.Search(searchString);
+
+            return View(model);
         }
     }
 }
