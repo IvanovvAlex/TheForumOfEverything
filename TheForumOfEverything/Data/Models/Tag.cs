@@ -8,16 +8,16 @@ namespace TheForumOfEverything.Data.Models
         {
 
         }
-        public Tag(string text)
+        public Tag(string content)
         {
-            this.Text = text;
+            this.Content = content;
         }
 
         [Required]
         public string Id { get; init; } = Guid.NewGuid().ToString();
 
         [Required]
-        public string Text { get; set; }
+        public string Content { get; set; }
 
         public ICollection<Post> Posts { get; set; } = new HashSet<Post>();
     }

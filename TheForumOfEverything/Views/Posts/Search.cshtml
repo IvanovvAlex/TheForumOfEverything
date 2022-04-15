@@ -26,55 +26,56 @@
             <input type="text" placeholder="Search.." name="SearchString">
             <button type="submit"><i class="fa fa-search"></i></button>
             @*<label>Search by:    </label>
-            <label class="radio-inline">
+                <label class="radio-inline">
                 <input type="radio" name="optradio" checked>Title
-            </label>
-            <label class="radio-inline">
+                </label>
+                <label class="radio-inline">
                 <input type="radio" name="optradio">Tag
-            </label>*@
+                </label>*@
         </form>
     </div>
 </div>
 <br>
 <br>
 <div>
-    
-@if(Model != null)
-{
-    @if(Model.Count() == 0)
+
+    @if (Model != null)
     {
-        <h4>There's not posts which to contain this word in their title.</h4>
-    }
-    <!-- Main Content-->
-    <div class="container px-4 px-lg-5">
-        <div class="row gx-4 gx-lg-5 justify-content-center">
-            <div class="col-md-10 col-lg-8 col-xl-7">
-              @foreach (var item in Model){
-                <!-- Post preview-->
-                <div class="post-preview">
-                    <a asp-controller="Posts" asp-action="Details" asp-route-id="@item.Id">
-                        @if(item.Title.Length >= 30)
-                        {
-                            <h4 class="post-title">@item.Title.Substring(0, 30)...</h4>
-                        }
-                        else
-                        {
-                            <h4 class="post-title">@item.Title</h4>                            
-                        }
-                        <h6 class="post-subtitle">@item.Description</h6>
-                    </a>
-                    <p class="post-meta">
-                        Posted by
-                        <a href="/ApplicationUsers/Details/@item.User.Id">@item.User.UserName</a>
-                        on @item.TimeCreated
-                    </p>
+        @if (Model.Count() == 0)
+        {
+            <h4>There's not posts which to contain this word in their title.</h4>
+        }
+        <!-- Main Content-->
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    @foreach (var item in Model)
+                    {
+                        <!-- Post preview-->
+                        <div class="post-preview">
+                            <a asp-controller="Posts" asp-action="Details" asp-route-id="@item.Id">
+                                @if (item.Title.Length >= 30)
+                                {
+                                    <h4 class="post-title">@item.Title.Substring(0, 30)...</h4>
+                                }
+                                else
+                                {
+                                    <h4 class="post-title">@item.Title</h4>
+                                }
+                                <h6 class="post-subtitle">@item.Description</h6>
+                            </a>
+                            <p class="post-meta">
+                                Posted by
+                                <a href="/ApplicationUsers/Details/@item.User.Id">@item.User.UserName</a>
+                                on @item.TimeCreated
+                            </p>
+                        </div>
+                        <!-- Divider-->
+                        <hr class="my-4" />
+                    }
                 </div>
-                <!-- Divider-->
-                <hr class="my-4" />
-               }
             </div>
         </div>
-    </div>
-}
+    }
 
 </div>

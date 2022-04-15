@@ -18,7 +18,7 @@ namespace TheForumOfEverything.Services.Tags
                 .Select(x => new TagViewModel()
                 {
                     Id = x.Id,
-                    Text = x.Text,
+                    Text = x.Content,
                 })
                 .ToListAsync();
 
@@ -28,7 +28,7 @@ namespace TheForumOfEverything.Services.Tags
         {
             string modelText = model.Text;
 
-            bool isTagExist = await context.Tags.AnyAsync(x => x.Text == modelText);
+            bool isTagExist = await context.Tags.AnyAsync(x => x.Content == modelText);
             if (isTagExist)
             {
                 return null;
@@ -36,7 +36,7 @@ namespace TheForumOfEverything.Services.Tags
 
             Tag newTag = new Tag(modelText);
             await context.Tags.AddAsync(newTag);
-            context.SaveChangesAsync();
+            await context.SaveChangesAsync();
             string newTagId = newTag.Id;
             TagViewModel newTagViewModel = new TagViewModel()
             {
@@ -44,6 +44,35 @@ namespace TheForumOfEverything.Services.Tags
                 Text = modelText,
             };
             return newTagViewModel;
+        }
+
+        public async Task EnsureCreated(string postId, string input)
+        {
+            if (string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input) || string.IsNullOrEmpty(postId) || string.IsNullOrWhiteSpace(postId))
+            {
+                return;
+            }
+            List<string> listOfTags = input.Split(' ', StringSplitOptions.RemoveEmptyEntries).ToList();
+            foreach (var tagContent in listOfTags)
+            {
+                bool isTagExist = await context.Tags.AnyAsync(x => x.Content == tagContent);
+                if (!isTagExist)
+                {
+                    Tag newTag = new Tag(tagContent);
+                    await context.Tags.AddAsync(newTag);
+                    await context.SaveChangesAsync();
+                }
+
+                Tag tag = await context.Tags.FirstOrDefaultAsync(x => x.Content == tagContent);
+                Post post = await context.Posts.FirstOrDefaultAsync(x => x.Id == postId);
+
+                if (post != null)
+                {
+                    tag.Posts.Add(post);
+                    post.Tags.Add(tag);
+                    await context.SaveChangesAsync();
+                }
+            }
         }
 
         public async Task<TagViewModel> GetById(string id)
@@ -57,7 +86,7 @@ namespace TheForumOfEverything.Services.Tags
             TagViewModel model = new TagViewModel()
             {
                 Id = tag.Id,
-                Text = tag.Text,
+                Text = tag.Content,
             };
 
             return model;
@@ -73,8 +102,8 @@ namespace TheForumOfEverything.Services.Tags
                 return null;
             }
 
-            tag.Text = model.Text;
-            context.SaveChangesAsync();
+            tag.Content = model.Text;
+            await context.SaveChangesAsync();
 
             return model;
         }
@@ -87,7 +116,7 @@ namespace TheForumOfEverything.Services.Tags
                 return false;
             }
             context.Tags.Remove(tag);
-            context.SaveChangesAsync();
+            await context.SaveChangesAsync();
             return true;
         }
     }

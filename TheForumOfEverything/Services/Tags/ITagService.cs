@@ -6,6 +6,7 @@ namespace TheForumOfEverything.Services.Tags
     {
         Task<ICollection<TagViewModel>> GetAll();
         Task<TagViewModel> Create(CreateTagViewModel model);
+        Task EnsureCreated(string postId, string input);
         Task<TagViewModel> GetById(string id);
         Task<TagViewModel> Edit(TagViewModel model);
         Task<bool> DeleteById(string id);

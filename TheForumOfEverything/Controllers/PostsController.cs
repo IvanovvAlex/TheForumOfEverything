@@ -11,6 +11,7 @@ using TheForumOfEverything.Models.Posts;
 using TheForumOfEverything.Models.Shared;
 using TheForumOfEverything.Services.Comments;
 using TheForumOfEverything.Services.Posts;
+using TheForumOfEverything.Services.Tags;
 
 namespace TheForumOfEverything.Controllers
 {
@@ -18,13 +19,15 @@ namespace TheForumOfEverything.Controllers
     {
         private readonly IPostService postService;
         private readonly ICommentService commentService;
+        private readonly ITagService tagService;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly ApplicationDbContext context;
 
-        public PostsController(IPostService postService, ICommentService commentService, UserManager<ApplicationUser> userManager, ApplicationDbContext context)
+        public PostsController(IPostService postService, ICommentService commentService, ITagService tagService, UserManager<ApplicationUser> userManager, ApplicationDbContext context)
         {
             this.postService = postService;
             this.userManager = userManager;
+            this.tagService = tagService;
             this.context = context;
             this.commentService = commentService;
         }
@@ -54,10 +57,11 @@ namespace TheForumOfEverything.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             PostViewModel newPostModel = await postService.Create(model, userId);
-
+            string newPostId = newPostModel.Id;
+            await tagService.EnsureCreated(newPostId, model.Tags);
             if (newPostModel != null)
             {
-                return Redirect($"/Posts/Details/{newPostModel.Id}");
+                return Redirect($"/Posts/Details/{newPostId}");
             }
             return View(model);
         }
