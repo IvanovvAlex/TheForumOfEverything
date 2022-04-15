@@ -10,6 +10,7 @@ using TheForumOfEverything.Services.Categories;
 using TheForumOfEverything.Services.Roles;
 using TheForumOfEverything.Areas.Administration.Services;
 using TheForumOfEverything.Areas.Administration.Services.ApplicationUsers;
+using TheForumOfEverything.Services.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +40,7 @@ builder.Services.AddTransient<ICategoryService, CategoryService>();
 builder.Services.AddTransient<ICommentService, CommentService>();
 builder.Services.AddTransient<ITagService, TagService>();
 builder.Services.AddTransient<IRoleService, RoleService>();
+builder.Services.AddTransient<ISharedService, SharedService>();
 
 var app = builder.Build();
 
