@@ -101,6 +101,7 @@ namespace TheForumOfEverything.Controllers
                 return NotFound();
             }
             string id = model.Id;
+            await tagService.EnsureCreated(id, model.TagsToString);
 
             return Redirect($"/Posts/Details/{id}");
         }

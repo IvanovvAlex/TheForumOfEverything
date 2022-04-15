@@ -133,6 +133,8 @@ namespace TheForumOfEverything.Services.Posts
 
             var sanitized = sanitizer.Sanitize(post.Content, "http://www.example.com");
 
+            List<string> listOfTags = post.Tags.Select(x => x.Content).ToList();
+
             PostViewModel model = new PostViewModel()
             {
                 Id = post.Id,
@@ -147,7 +149,7 @@ namespace TheForumOfEverything.Services.Posts
                 IsApproved = post.IsApproved,
                 Comments = post.Comments.OrderByDescending(x => x.TimeCreated).ToList(),
                 Tags = post.Tags,
-                TagsToString = string.Join(' ', post.Tags),
+                TagsToString = string.Join(' ', listOfTags),
                 ImgUrl = "/assets/img/it-category.jpg"
             };
 
@@ -162,11 +164,18 @@ namespace TheForumOfEverything.Services.Posts
             }
             string modelId = model.Id;
 
-            Post post = await context.Posts
+            Post post = await context.Posts.Include(x => x.Tags)
                 .FirstOrDefaultAsync(x => x.Id == modelId);
             if (post == null)
             {
                 return null;
+            }
+
+            List<Tag> tags = post.Tags.ToList();
+
+            foreach (var tag in tags)
+            {
+                tag.Posts.Remove(post);
             }
 
             post.CategoryId = model.CategoryId;
