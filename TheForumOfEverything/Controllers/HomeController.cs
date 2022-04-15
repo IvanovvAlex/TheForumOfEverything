@@ -50,8 +50,10 @@ namespace TheForumOfEverything.Controllers
         [HttpPost]
         public async Task<IActionResult> Contact(ContactViewModel model)
         {
-            await sharedService.EmailSender(model);
-
+            if (ModelState.IsValid)
+            {
+                await sharedService.EmailSender(model);
+            }
             return RedirectToAction("Index");
         }
 

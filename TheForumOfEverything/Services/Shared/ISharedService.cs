@@ -4,6 +4,6 @@ namespace TheForumOfEverything.Services.Shared
 {
     public interface ISharedService
     {
-        Task<bool> EmailSender(ContactViewModel model);
+        Task EmailSender(ContactViewModel model);
     }
 }
