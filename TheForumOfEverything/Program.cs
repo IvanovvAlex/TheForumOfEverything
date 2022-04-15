@@ -9,6 +9,7 @@ using TheForumOfEverything.Services.Comments;
 using TheForumOfEverything.Services.Categories;
 using TheForumOfEverything.Services.Roles;
 using TheForumOfEverything.Areas.Administration.Services;
+using TheForumOfEverything.Areas.Administration.Services.ApplicationUsers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +32,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
     .AddEntityFrameworkStores<ApplicationDbContext>(); 
 builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<IApplicationUserService, ApplicationUserService>();
+builder.Services.AddTransient<IApplicationUserAdminService, ApplicationUserAdminService>();
 builder.Services.AddTransient<IPostService, PostService>();
 builder.Services.AddTransient<IPostAdminService, PostAdminService>();
 builder.Services.AddTransient<ICategoryService, CategoryService>();

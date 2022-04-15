@@ -1,19 +1,35 @@
 ﻿@model IEnumerable<TheForumOfEverything.Models.Users.UserViewModel>
-
+<head>
+    <link href="~/css/site.css" rel="stylesheet" />
+</head>
+<div class="topnav">
+    <div class="search-container">
+        <form asp-area="Administration" asp-controller="Home" asp-action="AddAdmins" method="Post">
+            <input type="text" placeholder="Search.." name="SearchString">
+        </form>
+    </div>
+</div>
 <br>
-    <div class="container px-4 px-lg-5">
-        <div class="row gx-4 gx-lg-5 justify-content-center">
-            <div class="col-md-10 col-lg-8 col-xl-7">
-              @foreach (var item in Model){
+<br>
+<br>
+@if (Model.Count() == 0)
+{
+    <h4>There's not users who to contain this word in their username.</h4>
+}
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+            @foreach (var item in Model)
+            {
                 <!-- Post preview-->
                 <div class="post-preview">
                     <a asp-area="" asp-controller="ApplicationUsers" asp-action="Details" asp-route-id="@item.Id">
-                            <h4 class="post-title">@item.Username</h4>                            
+                        <h4 class="post-title">@item.Username</h4>
                     </a>
                 </div>
                 <!-- Divider-->
                 <hr class="my-4" />
-               }
-            </div>
+            }
         </div>
     </div>
+</div>

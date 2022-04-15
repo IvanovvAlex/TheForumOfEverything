@@ -210,6 +210,10 @@ namespace TheForumOfEverything.Services.Posts
 
         public async Task<ICollection<PostViewModel>> Search(string searchString)
         {
+            if (string.IsNullOrEmpty(searchString) || string.IsNullOrWhiteSpace(searchString))
+            {
+                return await this.GetAll();
+            }
             ICollection<PostViewModel> posts = await context.Posts
                             .Include(x => x.User)
                             .Where(x => x.IsApproved && !x.IsDeleted && x.Title.Contains(searchString))

@@ -149,16 +149,40 @@ namespace TheForumOfEverything.Areas.Administration.Services
                 return false;
             }
             context.Posts.Remove(post);
-            context.SaveChangesAsync();
+            await context.SaveChangesAsync();
             return true;
         }
-        private void EnsureFolder(string path)
+        //private void EnsureFolder(string path)
+        //{
+        //    string directoryName = Path.GetDirectoryName(path);
+        //    if (directoryName.Length > 0)
+        //    {
+        //        Directory.CreateDirectory(Path.GetDirectoryName(path));
+        //    }
+        //}
+
+        public async Task<ICollection<PostViewModel>> Search(string searchString)
         {
-            string directoryName = Path.GetDirectoryName(path);
-            if (directoryName.Length > 0)
+            if(string.IsNullOrEmpty(searchString) || string.IsNullOrWhiteSpace(searchString))
             {
-                Directory.CreateDirectory(Path.GetDirectoryName(path));
+                return await this.GetAll();
             }
+            ICollection<PostViewModel> posts = await context.Posts
+                            .Include(x => x.User)
+                            .Where(x => !x.IsApproved && !x.IsDeleted && x.Title.Contains(searchString))
+                            .Select(x => new PostViewModel()
+                            {
+                                Id = x.Id,
+                                Title = x.Title,
+                                Description = x.Description,
+                                Content = x.Content,
+                                TimeCreated = x.TimeCreated,
+                                User = x.User,
+                            })
+                            .OrderByDescending(x => x.TimeCreated)
+                            .ToListAsync();
+
+            return posts;
         }
     }
 }
