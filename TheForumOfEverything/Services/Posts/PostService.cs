@@ -123,7 +123,7 @@ namespace TheForumOfEverything.Services.Posts
             {
                 return null;
             }
-            Post post = await context.Posts.Include(u => u.User).Include(c => c.Category).Include(c => c.Comments).FirstOrDefaultAsync(x => x.Id == id);
+            Post post = await context.Posts.Include(u => u.User).Include(c => c.Category).Include(c => c.Comments).Include(t => t.Tags).FirstOrDefaultAsync(x => x.Id == id);
             if (post == null)
             {
                 return null;
@@ -146,6 +146,8 @@ namespace TheForumOfEverything.Services.Posts
                 CategoryId = post.CategoryId,
                 IsApproved = post.IsApproved,
                 Comments = post.Comments.OrderByDescending(x => x.TimeCreated).ToList(),
+                Tags = post.Tags,
+                TagsToString = string.Join(' ', post.Tags),
                 ImgUrl = "/assets/img/it-category.jpg"
             };
 

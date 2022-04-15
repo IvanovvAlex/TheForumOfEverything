@@ -17,6 +17,7 @@ namespace TheForumOfEverything.Models.Posts
         public string Title { get; set; }
         public string Description { get; set; }
         public string Content { get; set; }
+        public string TagsToString { get; set; }
         public string ImgUrl { get; set; }
 
         //[ Display(Name = "Header Image")]
