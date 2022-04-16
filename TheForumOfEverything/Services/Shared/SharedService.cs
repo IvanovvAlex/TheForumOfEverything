@@ -1,11 +1,18 @@
 ﻿using System.Net;
 using System.Net.Mail;
 using TheForumOfEverything.Models.Shared;
+using System.Configuration;
 
 namespace TheForumOfEverything.Services.Shared
 {
     public class SharedService : ISharedService
     {
+        private IConfiguration configuration;
+        public SharedService(IConfiguration config)
+        {
+            configuration = config;
+
+        }
         public async Task EmailSender(ContactViewModel model)
         {
             using (MailMessage mail = new MailMessage())
@@ -18,7 +25,8 @@ namespace TheForumOfEverything.Services.Shared
 
                 using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
                 {
-                    smtp.Credentials = new NetworkCredential("theforumofeverythingemail@gmail.com", "B&L_=puDxjuDdY?gf=DgE@g=+n2T#a3NUY@WmZrT?ScJ_+-6w#e^tHVf9sa??JLSA%34S*m2mqAfb?Kgp653UR@yL8$mwZBA3zbL");
+                    string pass = configuration.GetValue<string>("EmailPassword");
+                    smtp.Credentials = new NetworkCredential("theforumofeverythingemail@gmail.com", pass);
                     smtp.EnableSsl = true;
                     smtp.Send(mail);
                 }

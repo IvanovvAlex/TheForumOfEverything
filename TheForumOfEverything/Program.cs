@@ -11,6 +11,7 @@ using TheForumOfEverything.Services.Roles;
 using TheForumOfEverything.Areas.Administration.Services;
 using TheForumOfEverything.Areas.Administration.Services.ApplicationUsers;
 using TheForumOfEverything.Services.Shared;
+using TheForumOfEverything.Areas.Administration.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +42,7 @@ builder.Services.AddTransient<ICommentService, CommentService>();
 builder.Services.AddTransient<ITagService, TagService>();
 builder.Services.AddTransient<IRoleService, RoleService>();
 builder.Services.AddTransient<ISharedService, SharedService>();
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
@@ -72,6 +74,7 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
+app.MapHub<ChatHub>("/chat");
 
 using (var scope = app.Services.CreateScope())
 {

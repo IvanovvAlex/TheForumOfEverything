@@ -31,6 +31,7 @@ namespace TheForumOfEverything.Areas.Administration.Controllers
         {
             return View();
         }
+
         public async Task<IActionResult> Users()
         {
             ICollection<UserViewModel> users = await userService.GetUsers();
@@ -54,6 +55,11 @@ namespace TheForumOfEverything.Areas.Administration.Controllers
         {
             ICollection<PostViewModel> posts = await postService.Search(SearchString);
             return View(posts);
+        }
+
+        public IActionResult Chat()
+        {
+            return View();
         }
     }
 }

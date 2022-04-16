@@ -1,0 +1,61 @@
+﻿@{
+    ViewBag.Title = "Chat";
+}
+
+<head>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+</head>
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">Admin chat</div>
+                <div class="panel-body">
+                    <div class="container" id="messagesList">
+                    </div>
+                    <div class="panel-footer">
+                        <div class="input-group">
+                            <input id="messageInput" type="text" class="form-control">
+                            <span class="input-group-btn">
+                                <button id="sendButton" class="btn btn-default" type="button">Send</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+<script>
+    var connection =
+        new signalR.HubConnectionBuilder()
+        .withUrl("/chat")
+        .build();
+    connection.on("NewMessage",
+        function (message) {
+            var chatInfo = `<div>${message.user}: ${escapeHtml(message.text)}</div>`;
+            $("#messagesList").append(chatInfo);
+        });
+    $("#sendButton").click(function () {
+        var message = $("#messageInput").val();
+
+        if (message != ""){
+            connection.invoke("Send", message);
+            $("#messageInput").val("");
+        }
+    });
+    connection.start().catch(function (err) {
+        return console.error(err.toString());
+    });
+    function escapeHtml(unsafe) {
+        return unsafe
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+</script>

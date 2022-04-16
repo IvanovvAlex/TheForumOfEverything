@@ -2,12 +2,18 @@
 <html>
 <head>
     <link href="~/css/adminLayout.css" rel="stylesheet" />
+    <!--Reference the SignalR library. -->
+    <script src="../../js/microsoft/signalr/dist/browser/signalr.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
 </head>
 <body>
 
     <ul>
         <li><a asp-area="Administration" asp-controller="Home" asp-action="ApprovePosts">Approve Posts</a></li>
         <li><a asp-area="Administration" asp-controller="Home" asp-action="Users">Users</a></li>
+        <li><a asp-area="Administration" asp-controller="Home" asp-action="Chat">Chat</a></li>
         <li style="float:right"><a class="active" asp-area="" asp-controller="Home" asp-action="Index">Back To Default Views</a></li>
     </ul>
     <div class="container">
