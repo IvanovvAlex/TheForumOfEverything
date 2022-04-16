@@ -27,6 +27,13 @@
                     }
                     <h2 class="subheading">@Model.Description</h2>
                     <h4>@Model.Category.Title</h4>
+                    <h2 style="font-family:tempus sans itc;">
+                        @foreach (var tag in Model.Tags)
+                        {
+                            <a href="/Tags/Details/@tag.Id" style="color: paleturquoise;">#@tag.Content</a>
+                        }
+                    </h2>
+
                     <span class="meta">
                         Posted by
                         <a href="/ApplicationUsers/Details/@Model.User.Id">@Html.DisplayFor(model => model.User.UserName)</a>
