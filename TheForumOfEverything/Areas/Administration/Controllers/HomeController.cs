@@ -31,7 +31,7 @@ namespace TheForumOfEverything.Areas.Administration.Controllers
         {
             return View();
         }
-        public async Task<IActionResult> AddAdmins()
+        public async Task<IActionResult> Users()
         {
             ICollection<UserViewModel> users = await userService.GetUsers();
             return View(users);

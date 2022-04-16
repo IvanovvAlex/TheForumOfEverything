@@ -77,7 +77,7 @@ namespace TheForumOfEverything.Services.Tags
 
         public async Task<TagViewModel> GetById(string id)
         {
-            Tag tag = await context.Tags.Include(x => x.Posts).FirstOrDefaultAsync(x => x.Id == id);
+            Tag tag = await context.Tags.Include(x => x.Posts.Where(x => x.IsApproved && !x.IsDeleted)).FirstOrDefaultAsync(x => x.Id == id);
             if (tag == null)
             {
                 return null;
@@ -124,7 +124,7 @@ namespace TheForumOfEverything.Services.Tags
         public async Task<ICollection<TagViewModel>> GetMostPopularNTags(int N)
         {
             ICollection<TagViewModel> tags = await context.Tags
-                            .Include(x => x.Posts)
+                            .Include(x => x.Posts.Where(x => x.IsApproved && !x.IsDeleted))
                             .OrderByDescending(x => x.Posts.Count)
                             .Select(x => new TagViewModel()
                             {

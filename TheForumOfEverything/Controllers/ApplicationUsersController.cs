@@ -37,7 +37,16 @@ namespace TheForumOfEverything.Controllers
         {
             var user = await userManager.FindByIdAsync(id);
             await roleService.AddUserToRole(user, "Admin");
-            return Redirect("/Administration/Home/AddAdmins/");
+            return Redirect("/Administration/Home/Users/");
+        }
+
+        [Area("Administration")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> RemoveAdmin(string id)
+        {
+            var user = await userManager.FindByIdAsync(id);
+            await userManager.RemoveFromRoleAsync(user, "Admin");
+            return Redirect("/Administration/Home/Users/");
         }
 
         public async Task<IActionResult> MyProfile()

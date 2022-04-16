@@ -1,5 +1,9 @@
 ﻿@using System.Security.Claims
+@using Microsoft.AspNetCore.Identity
+@using TheForumOfEverything.Data.Models
 @model TheForumOfEverything.Models.Users.UserViewModel
+@inject UserManager<ApplicationUser> userManager
+
 
 @{
     ViewData["Title"] = "Details";
@@ -48,10 +52,14 @@
         <div class="d-flex justify-content-center">
             <div class="d-flex justify-content-center">
                 <div class="d-flex justify-content-center">
-                    @if (User.IsInRole("Admin"))
+                    @if (User.IsInRole("Admin") && !await userManager.IsInRoleAsync(await userManager.FindByIdAsync(Model.Id), "Admin"))
                     {
                         <a id="login-submit" class="w-10 btn btn-lg btn-primary" asp-area="Administration" asp-controller="ApplicationUsers" asp-action="MakeAdmin" asp-route-id="@Model.Id">Make Admin</a>
 
+                    }
+                    else if(User.IsInRole("Admin") && await userManager.IsInRoleAsync(await userManager.FindByIdAsync(Model.Id), "Admin"))
+                    {
+                         <a id="login-submit" class="w-10 btn btn-lg btn-primary" asp-area="Administration" asp-controller="ApplicationUsers" asp-action="RemoveAdmin" asp-route-id="@Model.Id">Remove Admin</a>
                     }
                 </div>
             </div>
