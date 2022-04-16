@@ -48,7 +48,7 @@
 </header>
 <!-- Post Content-->
 <div class="col-lg-8 col-md-10 mx-auto testing">
-    @Html.Raw(HttpUtility.HtmlDecode(Model.Content))
+    @Html.Raw(Microsoft.Security.Application.Sanitizer.GetSafeHtmlFragment(Model.Content))
 </div>
 @*<div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
