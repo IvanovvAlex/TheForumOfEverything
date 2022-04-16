@@ -18,11 +18,33 @@
             </div>
             <div class="col-md-10 col-lg-5 col-xl-5">
                 <div class="post-heading">
-                    <h3 class="post-title" id="myProfileName">@Model.Name @Model.Surname</h3>
-                    <h6 class="subheading" id="myProfileBio">@Model.Bio</h6>
+                    @if (Model.Name != null || Model.Surname != null)
+                    {
+                        <h3 class="post-title" id="myProfileName">Name: @Model.Name @Model.Surname</h3>
+                    }
+                    <h6 class="subheading" id="myProfileAge">Age: @Model.Age</h6>
+                    <h6 class="subheading" id="myProfileAddress">Birthday: @Model.Birthday.ToString("dd.MM.yyyy")</h6>
+                    @if (Model.Address != null)
+                    {
+                        <h6 class="subheading" id="myProfileAddress">Address: @Model.Address</h6>
+                    }
                 </div>
             </div>
         </div>
+        @if (Model.Bio != null)
+        {
+            <br>
+            <div class="d-flex justify-content-center">
+                <div class="d-flex justify-content-center">
+                    <div class="post-heading">
+                        <h6 class="subheading" id="myProfileBio">Bio: </h6>
+                        <p>@Model.Bio</p>
+                    </div>
+                </div>
+            </div>
+        }
+        <br>
+        <br>
         <div class="d-flex justify-content-center">
             <div class="d-flex justify-content-center">
                 <div class="d-flex justify-content-center">

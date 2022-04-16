@@ -55,7 +55,7 @@ namespace TheForumOfEverything.Services.ApplicationUsers
             return model;
         }
 
-        public Task<UserViewModel> GetUserViewModel(ApplicationUser user)
+        public async Task<UserViewModel> GetUserViewModel(ApplicationUser user)
         {
             if (user == null)
             {
@@ -67,12 +67,13 @@ namespace TheForumOfEverything.Services.ApplicationUsers
                 Name = user.Name,
                 Surname = user.Surname,
                 Address = user.Address,
+                Birthday = user.Birthday,
                 Bio = user.Bio,
             };
 
-            model.Posts = context.Posts.Where(p => p.UserId == user.Id && p.IsApproved && !p.IsDeleted).ToList();
+            model.Posts = await context.Posts.Where(p => p.UserId == user.Id && p.IsApproved && !p.IsDeleted).ToListAsync();
 
-            return Task.FromResult(model);
+            return await Task.FromResult(model);
         }
 
         public async Task<UserViewModel> Edit(string userId, UserViewModel model)
@@ -93,7 +94,7 @@ namespace TheForumOfEverything.Services.ApplicationUsers
             user.Address = model.Address;
             user.Bio = model.Bio;
             user.Birthday = model.Birthday;
-            context.SaveChanges();
+            await context.SaveChangesAsync();
 
             return model;
         }

@@ -30,7 +30,7 @@
                     <span class="meta">
                         Posted by
                         <a href="/ApplicationUsers/Details/@Model.User.Id">@Html.DisplayFor(model => model.User.UserName)</a>
-                        on @Model.TimeCreated
+                        on @Model.TimeCreated.Split(' ')[0]
                     </span>
                     @if (User.IsInRole("Admin") || User.FindFirstValue(ClaimTypes.NameIdentifier) == Model.UserId)
                     {

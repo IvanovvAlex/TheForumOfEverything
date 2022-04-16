@@ -11,7 +11,7 @@ namespace TheForumOfEverything.Data.Models
 
         public string? Address { get; set; }
 
-        public DateTime Birthday { get; set; }
+        public DateTime Birthday { get; set; } = new DateTime(2000, 01, 01);
 
         public int Age => (DateTime.Now - Birthday).Days / 365;
 
