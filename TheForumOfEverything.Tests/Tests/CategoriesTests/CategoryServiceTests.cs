@@ -10,6 +10,7 @@ using TheForumOfEverything.Data.Models;
 using TheForumOfEverything.Models.Categories;
 using TheForumOfEverything.Services.Categories;
 using TheForumOfEverything.Services.Posts;
+using TheForumOfEverything.Services.Tags;
 using TheForumOfEverything.Tests.Data;
 
 namespace TheForumOfEverything.Tests.Tests.CategoriesTests
@@ -23,6 +24,7 @@ namespace TheForumOfEverything.Tests.Tests.CategoriesTests
 
         private ApplicationDbContext context;
         private CategoryService categoryService;
+        private ITagService tagService;
         private PostService postService;
         private string deleteCategoryId = "c096270b-0bb3-45e0-bce3-fac5c3837eba";
         private string categoryId = "4564823c-c289-4f24-940f-a9a24957e29a";
@@ -34,7 +36,7 @@ namespace TheForumOfEverything.Tests.Tests.CategoriesTests
             context.Database.EnsureCreated();
 
             DataSeeder.Seed(context);
-            postService = new PostService(context);
+            postService = new PostService(context, tagService);
             categoryService = new CategoryService(context, postService);
         }
 

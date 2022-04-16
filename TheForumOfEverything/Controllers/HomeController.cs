@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
+using TheForumOfEverything.Data;
 using TheForumOfEverything.Data.Models;
 using TheForumOfEverything.Models;
 using TheForumOfEverything.Models.Categories;
@@ -56,6 +57,9 @@ namespace TheForumOfEverything.Controllers
         {
             if (ModelState.IsValid)
             {
+                await sharedService.EmailSender(model);
+                model.To = model.From;
+                model.From = GlobalConstants.MainEmail;
                 await sharedService.EmailSender(model);
             }
             return RedirectToAction("Index");

@@ -6,6 +6,7 @@ using System.Security.Claims;
 using TheForumOfEverything.Data;
 using TheForumOfEverything.Data.Models;
 using TheForumOfEverything.Models.Posts;
+using TheForumOfEverything.Services.Tags;
 
 namespace TheForumOfEverything.Services.Posts
 {
@@ -13,14 +14,12 @@ namespace TheForumOfEverything.Services.Posts
     {
         private readonly ApplicationDbContext context;
         private readonly IWebHostEnvironment webHostEnvironment;
-        public PostService(ApplicationDbContext context)
+        private readonly ITagService tagService;
+       
+        public PostService(ApplicationDbContext context, ITagService tagService)
         {
             this.context = context;
-        }
-        public PostService(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
-        {
-            this.context = context;
-            this.webHostEnvironment = webHostEnvironment;
+            this.tagService = tagService;
         }
         public async Task<ICollection<PostViewModel>> GetAll()
         {
@@ -80,6 +79,9 @@ namespace TheForumOfEverything.Services.Posts
             string modelTitle = model.Title;
             string modelShortDescription = model.Description;
             string modelContent = model.Content;
+            string modelTags = model.Tags;
+
+
 
             bool isPostExist = await context.Posts.AnyAsync(x => x.Title == modelContent);
             if (isPostExist)
@@ -93,7 +95,8 @@ namespace TheForumOfEverything.Services.Posts
                 Description = modelShortDescription,
                 Content = modelContent,
                 CategoryId = model.CategoryId,
-                UserId = userId
+                UserId = userId,
+                TagsToString = modelTags
             };
             await context.Posts.AddAsync(newPost);
             await context.SaveChangesAsync();
@@ -129,9 +132,9 @@ namespace TheForumOfEverything.Services.Posts
                 return null;
             }
 
-            var sanitizer = new HtmlSanitizer();
+            //var sanitizer = new HtmlSanitizer();
 
-            var sanitized = sanitizer.Sanitize(post.Content, "http://www.example.com");
+            //var sanitized = sanitizer.Sanitize(post.Content, "http://www.example.com");
 
             List<string> listOfTags = post.Tags.Select(x => x.Content).ToList();
 
@@ -140,7 +143,7 @@ namespace TheForumOfEverything.Services.Posts
                 Id = post.Id,
                 Title = post.Title,
                 Description = post.Description,
-                Content = sanitized,
+                Content = post.Content,
                 TimeCreated = post.TimeCreated,
                 User = post.User,
                 UserId = post.UserId,
@@ -209,7 +212,11 @@ namespace TheForumOfEverything.Services.Posts
             {
                 return false;
             }
-            Post post = await context.Posts.FirstOrDefaultAsync(x => x.Id == id);
+
+            Post post = await context.Posts.Include(x => x.Tags).FirstOrDefaultAsync(x => x.Id == id);
+
+            await tagService.EnsureCreated(id, post.TagsToString);
+
             if (post == null)
             {
                 return false;

@@ -39,6 +39,9 @@ namespace TheForumOfEverything.Data.Models
         [Required]
         public string Content { get; set; }
 
+        [Required]
+        public string TagsToString { get; set; }
+
         public ICollection<Tag> Tags { get; set; } = new HashSet<Tag>();
         public ICollection<Comment> Comments { get; set; } = new HashSet<Comment>();
     }

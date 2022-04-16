@@ -9,6 +9,7 @@ using TheForumOfEverything.Data;
 using TheForumOfEverything.Data.Models;
 using TheForumOfEverything.Models.Posts;
 using TheForumOfEverything.Services.Posts;
+using TheForumOfEverything.Services.Tags;
 using TheForumOfEverything.Tests.Data;
 
 namespace TheForumOfEverything.Tests.Tests.PostsTests
@@ -21,6 +22,7 @@ namespace TheForumOfEverything.Tests.Tests.PostsTests
 
 
         private ApplicationDbContext context;
+        private ITagService tagService;
         private PostService postService;
         private string postId = "98d09cfe-ecd6-48ed-b9e7-3607f26a6a6c";
         private string deletePostId = "31735522-39f9-4286-af7c-81b02aefd547";
@@ -35,7 +37,7 @@ namespace TheForumOfEverything.Tests.Tests.PostsTests
 
             DataSeeder.Seed(context);
 
-            postService = new PostService(context);
+            postService = new PostService(context, tagService);
         }
 
         [Test]

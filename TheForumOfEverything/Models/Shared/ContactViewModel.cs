@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using TheForumOfEverything.Data;
 
 namespace TheForumOfEverything.Models.Shared
 {
@@ -6,7 +7,7 @@ namespace TheForumOfEverything.Models.Shared
     {
         [Required]
         public string From { get; set; }
-        public string To { get; set; } = "theforumofeverythingemail@gmail.com";
+        public string To { get; set; } = GlobalConstants.MainEmail;
 
         [Required]
         public string Subject { get; set; }

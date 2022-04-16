@@ -58,7 +58,6 @@ namespace TheForumOfEverything.Controllers
 
             PostViewModel newPostModel = await postService.Create(model, userId);
             string newPostId = newPostModel.Id;
-            await tagService.EnsureCreated(newPostId, model.Tags);
             if (newPostModel != null)
             {
                 return Redirect($"/Posts/Details/{newPostId}");
