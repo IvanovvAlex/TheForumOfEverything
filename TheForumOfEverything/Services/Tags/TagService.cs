@@ -18,7 +18,7 @@ namespace TheForumOfEverything.Services.Tags
                 .Select(x => new TagViewModel()
                 {
                     Id = x.Id,
-                    Text = x.Content,
+                    Content = x.Content,
                 })
                 .ToListAsync();
 
@@ -41,7 +41,7 @@ namespace TheForumOfEverything.Services.Tags
             TagViewModel newTagViewModel = new TagViewModel()
             {
                 Id = newTagId,
-                Text = modelText,
+                Content = modelText,
             };
             return newTagViewModel;
         }
@@ -77,7 +77,7 @@ namespace TheForumOfEverything.Services.Tags
 
         public async Task<TagViewModel> GetById(string id)
         {
-            Tag tag = await context.Tags.FirstOrDefaultAsync(x => x.Id == id);
+            Tag tag = await context.Tags.Include(x => x.Posts).FirstOrDefaultAsync(x => x.Id == id);
             if (tag == null)
             {
                 return null;
@@ -86,7 +86,8 @@ namespace TheForumOfEverything.Services.Tags
             TagViewModel model = new TagViewModel()
             {
                 Id = tag.Id,
-                Text = tag.Content,
+                Content = tag.Content,
+                Posts = tag.Posts
             };
 
             return model;
@@ -102,7 +103,7 @@ namespace TheForumOfEverything.Services.Tags
                 return null;
             }
 
-            tag.Content = model.Text;
+            tag.Content = model.Content;
             await context.SaveChangesAsync();
 
             return model;
@@ -118,6 +119,22 @@ namespace TheForumOfEverything.Services.Tags
             context.Tags.Remove(tag);
             await context.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<ICollection<TagViewModel>> GetMostPopularNTags(int N)
+        {
+            ICollection<TagViewModel> tags = await context.Tags
+                            .Include(x => x.Posts)
+                            .OrderByDescending(x => x.Posts.Count)
+                            .Select(x => new TagViewModel()
+                            {
+                                Id = x.Id,
+                                Content = x.Content,
+                                Posts = x.Posts
+                            })
+                            .Take(N)
+                            .ToListAsync();
+            return tags;
         }
     }
 }

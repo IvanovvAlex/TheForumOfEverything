@@ -100,7 +100,7 @@ namespace TheForumOfEverything.Services.Comments
             }
 
             comment.Content = model.Content;
-            context.SaveChangesAsync();
+            await context.SaveChangesAsync();
 
             return model;
         }
@@ -117,7 +117,7 @@ namespace TheForumOfEverything.Services.Comments
                 return false;
             }
             context.Comments.Remove(comment);
-            context.SaveChangesAsync();
+            await context.SaveChangesAsync();
             return true;
         }
     }

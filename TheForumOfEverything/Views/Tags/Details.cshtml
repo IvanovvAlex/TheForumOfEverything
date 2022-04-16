@@ -2,37 +2,50 @@
 
 @{
     ViewData["Title"] = "Details";
+    ViewData["Header Page"] = $"all-categories.jpg";
 }
 
 <!-- Header -->
-<header class="masthead" style="background-image:url('/assets/img/@ViewData["Image"]')">
+<header class="masthead" id="mastheadOnlyWithTitle" style="background-image:url('/assets/img/@ViewData["Header Page"]')">
     <div class="container position-relative px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-7">
                 <div class="page-heading">
-                    <h1>About Me</h1>
-                    <span class="subheading">This is what I do.</span>
+                    <h1>@Model.Content</h1>
                 </div>
             </div>
         </div>
     </div>
 </header>
 
-<h1>Details</h1>
-
-<div>
-    <h4>Tag</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Text)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Text)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<!-- Main Content-->
+<br>
+<br>
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+              @foreach (var item in Model.Posts){
+                <!-- Post preview-->
+                <div class="post-preview">
+                    <a asp-controller="Posts" asp-action="Details" asp-route-id="@item.Id">
+                        @if(item.Title.Length >= 30)
+                        {
+                            <h4 class="post-title">@item.Title.Substring(0, 30)...</h4>
+                        }
+                        else
+                        {
+                            <h4 class="post-title">@item.Title</h4>                            
+                        }
+                        <h6 class="post-subtitle">@item.Description</h6>
+                    </a>
+                    <p class="post-meta">
+                        Posted
+                        on @item.TimeCreated.Split(' ')[0]
+                    </p>
+                </div>
+                <!-- Divider-->
+                <hr class="my-4" />
+               }
+            </div>
+        </div>
+    </div>
