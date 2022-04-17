@@ -214,13 +214,13 @@ namespace TheForumOfEverything.Services.Posts
             }
 
             Post post = await context.Posts.Include(x => x.Tags).FirstOrDefaultAsync(x => x.Id == id);
-
-            await tagService.EnsureCreated(id, post.TagsToString);
-
             if (post == null)
             {
                 return false;
             }
+
+            await tagService.EnsureCreated(id, post.TagsToString);
+
             post.IsApproved = true;
             await context.SaveChangesAsync();
             return true;
@@ -228,7 +228,7 @@ namespace TheForumOfEverything.Services.Posts
 
         public async Task<ICollection<PostViewModel>> Search(string searchString)
         {
-            if (string.IsNullOrEmpty(searchString) || string.IsNullOrWhiteSpace(searchString))
+            if (string.IsNullOrWhiteSpace(searchString))
             {
                 return await this.GetAll();
             }

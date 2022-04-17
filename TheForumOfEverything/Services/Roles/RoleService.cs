@@ -15,6 +15,10 @@ namespace TheForumOfEverything.Services.Roles
         }
         public async Task<bool> CreateRole(string name)
         {
+            if(string.IsNullOrWhiteSpace(name))
+            {
+                return false; 
+            }
             await roleManager.CreateAsync(new IdentityRole
             {
                 Name = name

@@ -21,7 +21,7 @@ namespace TheForumOfEverything.Tests.Tests.CommentsTests
 
 
         private ApplicationDbContext context;
-        private CommentService commentService;
+        private ICommentService commentService;
         private string commentId = "f87591df-741d-4cc0-9682-b166ae4564e7";
         private string deleteCommentId = "e1bea40d-4962-48f9-9fb3-d2f6d94e31f3";
 

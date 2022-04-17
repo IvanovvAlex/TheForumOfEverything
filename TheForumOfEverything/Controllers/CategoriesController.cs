@@ -26,13 +26,13 @@ namespace TheForumOfEverything.Controllers
             return View(categories);
         }
 
-        [Authorize]
+        [Authorize(Roles = "Developer")]
         public async Task<IActionResult> Create()
         {
             return View();
         }
 
-        [Authorize]
+        [Authorize(Roles = "Developer")]
         [HttpPost]
         public async Task<IActionResult> Create(CreateCategoryViewModel model)
         {
@@ -61,7 +61,7 @@ namespace TheForumOfEverything.Controllers
             return View(model);
         }
 
-        [Authorize]
+        [Authorize(Roles = "Developer")]
         public async Task<IActionResult> Edit(string id)
         {
             CategoryViewModel model = await categoryService.GetById(id);
@@ -73,7 +73,7 @@ namespace TheForumOfEverything.Controllers
             return View(model);
         }
 
-        [Authorize]
+        [Authorize(Roles = "Developer")]
         [HttpPost]
         public async Task<IActionResult> Edit(CategoryViewModel model)
         {
@@ -87,7 +87,7 @@ namespace TheForumOfEverything.Controllers
             return Redirect($"/Categories/Details/{id}");
         }
 
-        [Authorize]
+        [Authorize(Roles = "Developer")]
         public async Task<IActionResult> Delete(string id)
         {
             bool isDeleted = await categoryService.DeleteById(id);

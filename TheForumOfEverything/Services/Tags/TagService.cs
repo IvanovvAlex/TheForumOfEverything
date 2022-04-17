@@ -26,6 +26,10 @@ namespace TheForumOfEverything.Services.Tags
         }
         public async Task<TagViewModel> Create(CreateTagViewModel model)
         {
+            if (model == null)
+            {
+                return null;
+            }
             string modelText = model.Text;
 
             bool isTagExist = await context.Tags.AnyAsync(x => x.Content == modelText);
@@ -48,7 +52,7 @@ namespace TheForumOfEverything.Services.Tags
 
         public async Task EnsureCreated(string postId, string input)
         {
-            if (string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input) || string.IsNullOrEmpty(postId) || string.IsNullOrWhiteSpace(postId))
+            if (string.IsNullOrWhiteSpace(input) || string.IsNullOrWhiteSpace(postId))
             {
                 return;
             }
@@ -77,6 +81,10 @@ namespace TheForumOfEverything.Services.Tags
 
         public async Task<TagViewModel> GetById(string id)
         {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return null;
+            }
             Tag tag = await context.Tags.Include(x => x.Posts.Where(x => x.IsApproved && !x.IsDeleted)).FirstOrDefaultAsync(x => x.Id == id);
             if (tag == null)
             {
@@ -95,6 +103,10 @@ namespace TheForumOfEverything.Services.Tags
 
         public async Task<TagViewModel> Edit(TagViewModel model)
         {
+            if (model == null)
+            {
+                return null;
+            }
             string modelId = model.Id;
 
             Tag tag = await context.Tags.FirstOrDefaultAsync(x => x.Id == modelId);
@@ -111,6 +123,11 @@ namespace TheForumOfEverything.Services.Tags
 
         public async Task<bool> DeleteById(string id)
         {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return false;
+            }
+
             Tag tag = await context.Tags.FirstOrDefaultAsync(x => x.Id == id);
             if (tag == null)
             {
@@ -123,6 +140,11 @@ namespace TheForumOfEverything.Services.Tags
 
         public async Task<ICollection<TagViewModel>> GetMostPopularNTags(int N)
         {
+            if (N == null)
+            {
+                return null;
+            }
+
             ICollection<TagViewModel> tags = await context.Tags
                             .Include(x => x.Posts.Where(x => x.IsApproved && !x.IsDeleted))
                             .OrderByDescending(x => x.Posts.Count)

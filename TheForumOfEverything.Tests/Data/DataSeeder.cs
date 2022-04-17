@@ -67,48 +67,29 @@ namespace TheForumOfEverything.Tests.Data
             return users;
         }
 
-        public static ICollection<Category> Categories()
+        public static ICollection<Tag> Tags()
         {
-            List<Category> categories = new List<Category>
+            List<Tag> tags = new List<Tag>
             {
-                new Category
+                new Tag
                 {
                    Id = "4564823c-c289-4f24-940f-a9a24957e29a",
-                   Title = "IT",
+                   Content = "Tag1Test",
                 },
-                new Category
+                new Tag
                 {
                    Id = "57925fc4-4b92-4617-9470-ffa86d1e9695",
-                   Title = "Cars",
+                   Content = "Tag2Test",
                 },
-                new Category
+                new Tag
                 {
                    Id = "7e3ff432-5219-4dfc-9c3d-391ee800190a",
-                   Title = "Medicine",
+                   Content = "Tag3Test",
                 },
-                new Category
-                {
-                   Id = "86c84b69-beae-4c62-b8f4-cd4892fded12",
-                   Title = "Kids",
-                },
-                new Category
-                {
-                   Id = "c096270b-0bb3-45e0-bce3-fac5c3837eba",
-                   Title = "Hunting",
-                },
-                new Category
-                {
-                   Id = "60a88faf-865f-43ed-8d3a-51cfc4bbb4c2",
-                   Title = "Jobs",
-                },
-                new Category
-                {
-                   Id = "b0a6748b-ab28-4757-abd8-e2c7213cca7f",
-                   Title = "Jokes",
-                },
+               
             };
 
-            return categories;
+            return tags;
         }
 
         public static ICollection<Comment> Comments()
@@ -175,7 +156,8 @@ namespace TheForumOfEverything.Tests.Data
                    UserId = "e3749770-6d4e-4f3c-886b-13e953eafb50",
                    IsApproved = true,
                    TimeCreated = DateTime.Now.ToString(),
-                   CategoryId = "c096270b-0bb3-45e0-bce3-fac5c3837eba"
+                   CategoryId = "c096270b-0bb3-45e0-bce3-fac5c3837eba",
+                   TagsToString = "ala bala",
 
                 },
                 new Post
@@ -187,7 +169,8 @@ namespace TheForumOfEverything.Tests.Data
                    UserId = "b9a3f5d8-532d-49eb-b3f8-f0b4e95bb62e",
                    IsApproved = true,
                    TimeCreated = DateTime.Now.ToString(),
-                   CategoryId = "86c84b69-beae-4c62-b8f4-cd4892fded12"
+                   CategoryId = "86c84b69-beae-4c62-b8f4-cd4892fded12",
+                   TagsToString = "a b",
 
                 },
                 new Post
@@ -199,8 +182,8 @@ namespace TheForumOfEverything.Tests.Data
                    UserId = "71b0265a-1994-4b4a-a824-8a4401aae60e",
                    IsApproved = true,
                    TimeCreated = DateTime.Now.ToString(),
-                   CategoryId = "7e3ff432-5219-4dfc-9c3d-391ee800190a"
-
+                   CategoryId = "7e3ff432-5219-4dfc-9c3d-391ee800190a",
+                   TagsToString = "testTag1 testTag2",
                 },
                 new Post
                 {
@@ -211,7 +194,9 @@ namespace TheForumOfEverything.Tests.Data
                    UserId = "99c88001-1221-4ff7-a0e9-f5efac98fe9e",
                    IsApproved = true,
                    TimeCreated = DateTime.Now.ToString(),
-                   CategoryId = "57925fc4-4b92-4617-9470-ffa86d1e9695"
+                   CategoryId = "57925fc4-4b92-4617-9470-ffa86d1e9695",
+                   TagsToString = "tag1",
+
 
                 },
                 new Post
@@ -223,7 +208,8 @@ namespace TheForumOfEverything.Tests.Data
                    UserId = "fee859e9-7b26-4cf8-a3c5-7cea60c13101",
                    IsApproved = true,
                    TimeCreated = DateTime.Now.ToString(),
-                   CategoryId = "4564823c-c289-4f24-940f-a9a24957e29a"
+                   CategoryId = "4564823c-c289-4f24-940f-a9a24957e29a",
+                   TagsToString = "22",
 
                 },
                 new Post
@@ -235,12 +221,57 @@ namespace TheForumOfEverything.Tests.Data
                    UserId = "fee859e9-7b26-4cf8-a3c5-7cea60c13101",
                    IsApproved = true,
                    TimeCreated = DateTime.Now.ToString(),
-                   CategoryId = "4564823c-c289-4f24-940f-a9a24957e29a"
+                   CategoryId = "4564823c-c289-4f24-940f-a9a24957e29a",
+                   TagsToString = "121",
 
                 },
             };
 
             return posts;
+        }
+
+        public static ICollection<Category> Categories()
+        {
+            List<Category> categories = new List<Category>
+            {
+                new Category
+                {
+                   Id = "4564823c-c289-4f24-940f-a9a24957e29a",
+                   Title = "IT",
+                },
+                new Category
+                {
+                   Id = "57925fc4-4b92-4617-9470-ffa86d1e9695",
+                   Title = "Cars",
+                },
+                new Category
+                {
+                   Id = "7e3ff432-5219-4dfc-9c3d-391ee800190a",
+                   Title = "Medicine",
+                },
+                new Category
+                {
+                   Id = "86c84b69-beae-4c62-b8f4-cd4892fded12",
+                   Title = "Kids",
+                },
+                new Category
+                {
+                   Id = "c096270b-0bb3-45e0-bce3-fac5c3837eba",
+                   Title = "Hunting",
+                },
+                new Category
+                {
+                   Id = "60a88faf-865f-43ed-8d3a-51cfc4bbb4c2",
+                   Title = "Jobs",
+                },
+                new Category
+                {
+                   Id = "b0a6748b-ab28-4757-abd8-e2c7213cca7f",
+                   Title = "Jokes",
+                },
+            };
+
+            return categories;
         }
 
         public static ApplicationUser User()
@@ -255,10 +286,11 @@ namespace TheForumOfEverything.Tests.Data
 
         public static void Seed(ApplicationDbContext context)
         {
-            //context.Users.Add(User());
+            context.Users.Add(User());
 
             var users = Users();
             var categories = Categories();
+            var tags = Tags();
             var comments = Comments();
             var posts = Posts();
 
@@ -266,6 +298,7 @@ namespace TheForumOfEverything.Tests.Data
             context.Categories.AddRange(categories);
             context.Comments.AddRange(comments);
             context.Posts.AddRange(posts);
+            context.Tags.AddRange(tags);
 
             context.SaveChanges();
         }

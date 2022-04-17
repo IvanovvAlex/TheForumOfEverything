@@ -53,7 +53,7 @@ namespace TheForumOfEverything.Controllers
             return View(model);
         }
 
-        [Authorize]
+        [Authorize(Roles = "Developer")]
         public async Task<IActionResult> Details(string id)
         {
             CommentViewModel model = await commentService.GetById(id);
@@ -64,7 +64,8 @@ namespace TheForumOfEverything.Controllers
             return View(model);
         }
 
-        [Authorize]
+
+        [Authorize(Roles = "Developer")]
         public async Task<IActionResult> Edit(string id)
         {
             CommentViewModel model = await commentService.GetById(id);
@@ -76,7 +77,7 @@ namespace TheForumOfEverything.Controllers
             return View(model);
         }
 
-        [Authorize]
+        [Authorize(Roles = "Developer")]
         [HttpPost]
         public async Task<IActionResult> Edit(CommentViewModel model)
         {
@@ -90,7 +91,7 @@ namespace TheForumOfEverything.Controllers
             return Redirect($"/Comments/Details/{id}");
         }
 
-        [Authorize]
+        [Authorize(Roles = "Developer")]
         public async Task<IActionResult> Delete(string id)
         {
             bool isDeleted = await commentService.DeleteById(id);

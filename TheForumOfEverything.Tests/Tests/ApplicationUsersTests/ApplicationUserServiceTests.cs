@@ -21,7 +21,7 @@ namespace TheForumOfEverything.Tests.Tests.ApplicationUsersTests
 
 
         private ApplicationDbContext context;
-        private ApplicationUserService userService;
+        private IApplicationUserService userService;
         private string userId = "fee859e9-7b26-4cf8-a3c5-7cea60c13101";
 
         [OneTimeSetUp]
@@ -38,11 +38,13 @@ namespace TheForumOfEverything.Tests.Tests.ApplicationUsersTests
         [Test]
         public void GetUserByIdTest()
         {
-            var nullUser = userService.GetUser("invalid guid");
-            var actualUser = userService.GetUser(userId);
+            var actualUser = userService.GetUser(userId).Result;
+            var invalidIdUser = userService.GetUser("invalid guid").Result;
+            var nullUser = userService.GetUser(null).Result;
 
-            Assert.Null(nullUser.Result);
-            Assert.IsTrue(actualUser.Result != null);
+            Assert.IsNotNull(actualUser);
+            Assert.IsNull(invalidIdUser);
+            Assert.IsNull(nullUser);
         }
 
         [Test]
@@ -50,9 +52,30 @@ namespace TheForumOfEverything.Tests.Tests.ApplicationUsersTests
         {
             ApplicationUser user = context.ApplicationUser.FirstOrDefault(x => x.Id == userId);
 
-            var model = userService.GetUserViewModel(user);
+            var model = userService.GetUserViewModel(user).Result;
+            var nullModel = userService.GetUserViewModel(null).Result;
 
-            Assert.IsNotNull(model.Result);
+            Assert.IsNotNull(model);
+            Assert.IsNull(nullModel);
+        }
+
+        [Test]
+        public void GetUsersTest()
+        {
+            var expectedCount = context.ApplicationUser.Count();
+            var users = userService.GetUsers().Result;
+
+            Assert.IsTrue(users.Count == expectedCount);
+        }
+
+        [Test]
+        public void SearchTest()
+        {
+            var searchString = "al"; 
+            var expectedCount = context.ApplicationUser.Where(x => x.Email.Contains(searchString)).Count();
+            var users = userService.Search(searchString).Result;
+
+            Assert.IsTrue(users.Count == expectedCount);
         }
 
         [Test]

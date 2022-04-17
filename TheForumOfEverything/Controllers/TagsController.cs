@@ -18,7 +18,6 @@ namespace TheForumOfEverything.Controllers
             this.userManager = userManager;
         }
 
-        [Authorize]
         public async Task<IActionResult> Index()
         {
             ICollection<TagViewModel> tags = await tagService.GetAll();
@@ -49,7 +48,6 @@ namespace TheForumOfEverything.Controllers
             return View(model);
         }
 
-        [Authorize]
         public async Task<IActionResult> Details(string id)
         {
             TagViewModel model = await tagService.GetById(id);
