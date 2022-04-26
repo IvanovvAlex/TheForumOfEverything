@@ -4,11 +4,6 @@ namespace TheForumOfEverything.Data.Models
 {
     public class Comment
     {
-        public Comment()
-        {
-
-        }
-
         [Required]
         public string Id { get; init; } = Guid.NewGuid().ToString();
 

@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="TheForumOfEverything.Data.Models.Post">
+    <Position X="1.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABDAAAAAgAgAkAAQAAAAAgAAAAAAEACAAAAAQAAKAA=</HashCode>
+      <FileName>Data\Models\Post.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TheForumOfEverything.Data.Models.ApplicationUser">
+    <Position X="5.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAADEAAAAQABAAIAAACAAAAAAAAIAA=</HashCode>
+      <FileName>Data\Models\ApplicationUser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.AspNetCore.Identity.IdentityUser">
+    <Position X="8.25" Y="2" Width="2.5" />
+    <InheritanceLine Type="Microsoft.AspNetCore.Identity.IdentityUser&lt;TKey&gt;" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="11.75" Y="2.625" />
+        <Point X="10.75" Y="2.625" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Microsoft.AspNetCore.Identity.IdentityUser&lt;TKey&gt;">
+    <Position X="11.75" Y="0.5" Width="3.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="TheForumOfEverything.Data.Models.Category">
+    <Position X="1.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAEAABAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Models\Category.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TheForumOfEverything.Data.Models.Comment">
+    <Position X="11.5" Y="7.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAADAAAAAgAAAAEAQAAAAAgAAAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Models\Comment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TheForumOfEverything.Data.Models.Tag">
+    <Position X="8" Y="7.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAgAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Models\Tag.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TheForumOfEverything.Data.ApplicationDbContext">
+    <Position X="8.25" Y="12.5" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQBAAAAAAAEAAAEEAAAAAAAAAAIAA=</HashCode>
+      <FileName>Data\ApplicationDbContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TheForumOfEverything.Services.ApplicationUsers.ApplicationUserService">
+    <Position X="4.25" Y="15" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>IAACAAAAAAAAAAAAAAAAAAAAAgAAAAACEAAAAAAgAAA=</HashCode>
+      <FileName>Services\ApplicationUsers\ApplicationUserService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="TheForumOfEverything.Services.ApplicationUsers.IApplicationUserService">
+    <Position X="4" Y="11.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAgAAAAACEAAAAAAgAAA=</HashCode>
+      <FileName>Services\ApplicationUsers\IApplicationUserService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="TheForumOfEverything.Services.Categories.ICategoryService">
+    <Position X="7.5" Y="10.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAAEACAgAAAAAEAIA=</HashCode>
+      <FileName>Services\Categories\ICategoryService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="TheForumOfEverything.Services.Comments.ICommentService">
+    <Position X="10.5" Y="10.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAAEACAgAAgAAAAIA=</HashCode>
+      <FileName>Services\Comments\ICommentService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="TheForumOfEverything.Services.Posts.IPostService">
+    <Position X="1" Y="9.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAABAAAAAAAAAAAAAACAAAEACAgAAAAAgBIA=</HashCode>
+      <FileName>Services\Posts\IPostService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="TheForumOfEverything.Services.Roles.IRoleService">
+    <Position X="3.5" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>Services\Roles\IRoleService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="TheForumOfEverything.Services.Shared.ISharedService">
+    <Position X="4.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIA=</HashCode>
+      <FileName>Services\Shared\ISharedService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="TheForumOfEverything.Services.Tags.ITagService">
+    <Position X="5.25" Y="8.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAEAAAAQCAAAEACAgAAAAAAAIA=</HashCode>
+      <FileName>Services\Tags\ITagService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="TheForumOfEverything.Areas.Administration.Services.ApplicationUsers.IApplicationUserAdminService">
+    <Position X="8.25" Y="16" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>Areas\Administration\Services\ApplicationUsers\IApplicationUserAdminService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="TheForumOfEverything.Areas.Administration.Services.IPostAdminService">
+    <Position X="0.75" Y="15.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAAEACAgAAAAAgBIA=</HashCode>
+      <FileName>Areas\Administration\Services\Posts\IPostAdminService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
