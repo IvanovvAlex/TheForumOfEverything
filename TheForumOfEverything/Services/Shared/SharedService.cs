@@ -33,8 +33,10 @@ namespace TheForumOfEverything.Services.Shared
 
                 using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
                 {
-                    string pass = configuration.GetValue<string>("EmailPassword");
-                    smtp.Credentials = new NetworkCredential(GlobalConstants.MainEmail, pass);
+                    string pass = GlobalConstants.PassEmail;
+                    string email = GlobalConstants.MainEmail;
+                    smtp.UseDefaultCredentials = false;
+                    smtp.Credentials = new NetworkCredential(email, pass);
                     smtp.EnableSsl = true;
                     smtp.Send(mail);
                 }
